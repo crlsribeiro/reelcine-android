@@ -1,4 +1,4 @@
-package com.carlosribeiro.reelcine.ui.theme
+package com.carlosribeiro.reelcine.presentation.theme
 
 import android.app.Activity
 import android.os.Build
