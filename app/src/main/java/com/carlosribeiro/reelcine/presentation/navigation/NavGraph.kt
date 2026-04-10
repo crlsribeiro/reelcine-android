@@ -1,6 +1,7 @@
 package com.carlosribeiro.reelcine.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -14,10 +15,12 @@ import com.carlosribeiro.reelcine.presentation.screens.moviedetail.MovieDetailSc
 
 @Composable
 fun NavGraph(
+    modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination: String = Screen.Login.route
 ) {
     NavHost(
+        modifier = modifier,
         navController = navController,
         startDestination = startDestination
     ) {

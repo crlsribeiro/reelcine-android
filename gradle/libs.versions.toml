@@ -10,7 +10,7 @@ activityCompose = "1.13.0"
 composeBom = "2024.09.00"
 
 # Hilt
-hilt = "2.51.1"
+hilt = "2.56.1"
 hiltNavigationCompose = "1.2.0"
 
 # Navigation
