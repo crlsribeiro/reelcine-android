@@ -38,3 +38,7 @@ local.properties
 *.jks
 *.keystore
 .idea/
+.DS_Store
+**/.DS_Store
+.DS_Store
+**/.DS_Store
