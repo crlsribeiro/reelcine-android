@@ -44,6 +44,10 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun onGoogleSignInError(message: String) {
+        _uiState.value = LoginUiState(error = message)
+    }
+
     fun clearError() {
         _uiState.value = _uiState.value.copy(error = null)
     }
