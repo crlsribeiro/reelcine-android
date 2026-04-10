@@ -1,6 +1,7 @@
 package com.carlosribeiro.reelcine.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,17 +12,33 @@ import com.carlosribeiro.reelcine.presentation.screens.auth.LoginScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.RegisterScreen
 import com.carlosribeiro.reelcine.presentation.screens.home.HomeScreen
 import com.carlosribeiro.reelcine.presentation.screens.moviedetail.MovieDetailScreen
+import com.carlosribeiro.reelcine.presentation.screens.splash.SplashScreen
 
 @Composable
 fun NavGraph(
     navController: NavHostController,
-    startDestination: String = Screen.Login.route
+    modifier: Modifier = Modifier,
+    startDestination: String = Screen.Splash.route
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        modifier = modifier
     ) {
-        composable(Screen.Splash.route) {}
+        composable(Screen.Splash.route) {
+            SplashScreen(
+                onNavigateToHome = {
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(Screen.Splash.route) { this.inclusive = true }
+                    }
+                },
+                onNavigateToLogin = {
+                    navController.navigate(Screen.Login.route) {
+                        popUpTo(Screen.Splash.route) { this.inclusive = true }
+                    }
+                }
+            )
+        }
         composable(Screen.Login.route) {
             LoginScreen(
                 onNavigateToHome = {
