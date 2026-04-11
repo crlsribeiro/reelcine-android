@@ -11,19 +11,27 @@ class MovieRepositoryImpl @Inject constructor(
 ) : MovieRepository {
 
     override suspend fun getTrendingMovies(): Result<List<Movie>> = runCatching {
-        tmdbApi.getTrendingMovies().results.map { it.toMovie() }
+        tmdbApi.getTrendingWeek().results.map { it.toMovie() }
+    }
+
+    override suspend fun getTrendingTodayMovies(): Result<List<Movie>> = runCatching {
+        tmdbApi.getTrendingToday().results.map { it.toMovie() }
     }
 
     override suspend fun getNowPlayingMovies(): Result<List<Movie>> = runCatching {
         tmdbApi.getNowPlayingMovies().results.map { it.toMovie() }
     }
 
-    override suspend fun getTopRatedMovies(): Result<List<Movie>> = runCatching {
-        tmdbApi.getTopRatedMovies().results.map { it.toMovie() }
-    }
-
     override suspend fun getUpcomingMovies(): Result<List<Movie>> = runCatching {
         tmdbApi.getUpcomingMovies().results.map { it.toMovie() }
+    }
+
+    override suspend fun getPopularMovies(): Result<List<Movie>> = runCatching {
+        tmdbApi.getPopularMovies().results.map { it.toMovie() }
+    }
+
+    override suspend fun getTopRatedMovies(): Result<List<Movie>> = runCatching {
+        tmdbApi.getTopRatedMovies().results.map { it.toMovie() }
     }
 
     override suspend fun searchMovies(query: String): Result<List<Movie>> = runCatching {

@@ -129,7 +129,7 @@ fun MovieDetailScreen(
                 ) {
                     Icon(Icons.Default.Star, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Avaliar Filme")
+                    Text("Avaliar Filme", color = Color.White, fontWeight = FontWeight.Bold)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 uiState.trailer?.let { trailer ->
@@ -143,7 +143,7 @@ fun MovieDetailScreen(
                     ) {
                         Icon(Icons.Default.PlayArrow, contentDescription = null)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Assistir Trailer")
+                        Text("Assistir Trailer", color = Color.White, fontWeight = FontWeight.Bold)
                     }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
