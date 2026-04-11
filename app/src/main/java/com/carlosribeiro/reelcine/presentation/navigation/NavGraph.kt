@@ -10,11 +10,12 @@ import androidx.navigation.navArgument
 import com.carlosribeiro.reelcine.presentation.screens.auth.ForgotPasswordScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.LoginScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.RegisterScreen
-import com.carlosribeiro.reelcine.presentation.screens.groups.GroupsScreen
 import com.carlosribeiro.reelcine.presentation.screens.feed.FeedScreen
-import com.carlosribeiro.reelcine.presentation.screens.profile.ProfileScreen
+import com.carlosribeiro.reelcine.presentation.screens.groups.GroupsScreen
 import com.carlosribeiro.reelcine.presentation.screens.home.HomeScreen
 import com.carlosribeiro.reelcine.presentation.screens.moviedetail.MovieDetailScreen
+import com.carlosribeiro.reelcine.presentation.screens.movielist.MovieListScreen
+import com.carlosribeiro.reelcine.presentation.screens.profile.ProfileScreen
 import com.carlosribeiro.reelcine.presentation.screens.splash.SplashScreen
 
 @Composable
@@ -70,6 +71,9 @@ fun NavGraph(
             HomeScreen(
                 onMovieClick = { movieId ->
                     navController.navigate(Screen.MovieDetail.createRoute(movieId))
+                },
+                onSeeAllClick = { category ->
+                    navController.navigate(Screen.MovieList.createRoute(category))
                 }
             )
         }
@@ -78,6 +82,17 @@ fun NavGraph(
             arguments = listOf(navArgument("movieId") { type = NavType.IntType })
         ) {
             MovieDetailScreen(onNavigateBack = { navController.popBackStack() })
+        }
+        composable(
+            route = Screen.MovieList.route,
+            arguments = listOf(navArgument("category") { type = NavType.StringType })
+        ) {
+            MovieListScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onMovieClick = { movieId ->
+                    navController.navigate(Screen.MovieDetail.createRoute(movieId))
+                }
+            )
         }
         composable(Screen.Groups.route) {
             GroupsScreen(
@@ -91,7 +106,9 @@ fun NavGraph(
             arguments = listOf(navArgument("groupId") { type = NavType.StringType })
         ) {}
         composable(Screen.Feed.route) {
-            FeedScreen(onMovieClick = { movieId -> navController.navigate(Screen.MovieDetail.createRoute(movieId)) })
+            FeedScreen(onMovieClick = { movieId ->
+                navController.navigate(Screen.MovieDetail.createRoute(movieId))
+            })
         }
         composable(Screen.Profile.route) {
             ProfileScreen(
