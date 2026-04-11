@@ -11,6 +11,7 @@ import com.carlosribeiro.reelcine.presentation.screens.auth.ForgotPasswordScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.LoginScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.RegisterScreen
 import com.carlosribeiro.reelcine.presentation.screens.groups.GroupsScreen
+import com.carlosribeiro.reelcine.presentation.screens.feed.FeedScreen
 import com.carlosribeiro.reelcine.presentation.screens.home.HomeScreen
 import com.carlosribeiro.reelcine.presentation.screens.moviedetail.MovieDetailScreen
 import com.carlosribeiro.reelcine.presentation.screens.splash.SplashScreen
@@ -88,7 +89,9 @@ fun NavGraph(
             route = Screen.GroupDetail.route,
             arguments = listOf(navArgument("groupId") { type = NavType.StringType })
         ) {}
-        composable(Screen.Feed.route) {}
+        composable(Screen.Feed.route) {
+            FeedScreen(onMovieClick = { movieId -> navController.navigate(Screen.MovieDetail.createRoute(movieId)) })
+        }
         composable(Screen.Profile.route) {}
     }
 }
