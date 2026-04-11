@@ -9,6 +9,8 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -105,12 +107,12 @@ fun RegisterScreen(
             onClick = { viewModel.signUp(name, email, password) },
             modifier = Modifier.fillMaxWidth().height(52.dp),
             enabled = !uiState.isLoading,
-            colors = ButtonDefaults.buttonColors(containerColor = Violet)
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)
         ) {
             if (uiState.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
             } else {
-                Text("Criar conta")
+                Text("Criar conta", color = Color.White, fontWeight = FontWeight.Bold)
             }
         }
 

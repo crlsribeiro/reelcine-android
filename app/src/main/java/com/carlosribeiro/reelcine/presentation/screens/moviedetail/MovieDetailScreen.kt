@@ -125,7 +125,7 @@ fun MovieDetailScreen(
                 Button(
                     onClick = { },
                     modifier = Modifier.fillMaxWidth().height(52.dp),
-                    colors = ButtonDefaults.buttonColors(containerColor = Violet)
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)
                 ) {
                     Icon(Icons.Default.Star, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
