@@ -21,6 +21,7 @@ class MainActivity : ComponentActivity() {
 
     private val bottomNavRoutes = listOf(
         Screen.Home.route,
+        Screen.Search.route,
         Screen.Groups.route,
         Screen.Feed.route,
         Screen.Profile.route
@@ -38,15 +39,10 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(
                     bottomBar = {
-                        if (showBottomBar) {
-                            BottomNavBar(navController = navController)
-                        }
+                        if (showBottomBar) BottomNavBar(navController = navController)
                     }
                 ) { innerPadding ->
-                    NavGraph(
-                        navController = navController,
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                    NavGraph(navController = navController, modifier = Modifier.padding(innerPadding))
                 }
             }
         }

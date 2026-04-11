@@ -16,6 +16,7 @@ import com.carlosribeiro.reelcine.presentation.screens.home.HomeScreen
 import com.carlosribeiro.reelcine.presentation.screens.moviedetail.MovieDetailScreen
 import com.carlosribeiro.reelcine.presentation.screens.movielist.MovieListScreen
 import com.carlosribeiro.reelcine.presentation.screens.profile.ProfileScreen
+import com.carlosribeiro.reelcine.presentation.screens.search.SearchScreen
 import com.carlosribeiro.reelcine.presentation.screens.splash.SplashScreen
 
 @Composable
@@ -24,32 +25,16 @@ fun NavGraph(
     modifier: Modifier = Modifier,
     startDestination: String = Screen.Splash.route
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier
-    ) {
+    NavHost(navController = navController, startDestination = startDestination, modifier = modifier) {
         composable(Screen.Splash.route) {
             SplashScreen(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Splash.route) { this.inclusive = true }
-                    }
-                },
-                onNavigateToLogin = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(Screen.Splash.route) { this.inclusive = true }
-                    }
-                }
+                onNavigateToHome = { navController.navigate(Screen.Home.route) { popUpTo(Screen.Splash.route) { this.inclusive = true } } },
+                onNavigateToLogin = { navController.navigate(Screen.Login.route) { popUpTo(Screen.Splash.route) { this.inclusive = true } } }
             )
         }
         composable(Screen.Login.route) {
             LoginScreen(
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Login.route) { this.inclusive = true }
-                    }
-                },
+                onNavigateToHome = { navController.navigate(Screen.Home.route) { popUpTo(Screen.Login.route) { this.inclusive = true } } },
                 onNavigateToRegister = { navController.navigate(Screen.Register.route) },
                 onNavigateToForgotPassword = { navController.navigate(Screen.ForgotPassword.route) }
             )
@@ -57,11 +42,7 @@ fun NavGraph(
         composable(Screen.Register.route) {
             RegisterScreen(
                 onNavigateToLogin = { navController.popBackStack() },
-                onNavigateToHome = {
-                    navController.navigate(Screen.Home.route) {
-                        popUpTo(Screen.Login.route) { this.inclusive = true }
-                    }
-                }
+                onNavigateToHome = { navController.navigate(Screen.Home.route) { popUpTo(Screen.Login.route) { this.inclusive = true } } }
             )
         }
         composable(Screen.ForgotPassword.route) {
@@ -69,55 +50,31 @@ fun NavGraph(
         }
         composable(Screen.Home.route) {
             HomeScreen(
-                onMovieClick = { movieId ->
-                    navController.navigate(Screen.MovieDetail.createRoute(movieId))
-                },
-                onSeeAllClick = { category ->
-                    navController.navigate(Screen.MovieList.createRoute(category))
-                }
+                onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) },
+                onSeeAllClick = { navController.navigate(Screen.MovieList.createRoute(it)) }
             )
         }
-        composable(
-            route = Screen.MovieDetail.route,
-            arguments = listOf(navArgument("movieId") { type = NavType.IntType })
-        ) {
+        composable(Screen.Search.route) {
+            SearchScreen(onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) })
+        }
+        composable(route = Screen.MovieDetail.route, arguments = listOf(navArgument("movieId") { type = NavType.IntType })) {
             MovieDetailScreen(onNavigateBack = { navController.popBackStack() })
         }
-        composable(
-            route = Screen.MovieList.route,
-            arguments = listOf(navArgument("category") { type = NavType.StringType })
-        ) {
+        composable(route = Screen.MovieList.route, arguments = listOf(navArgument("category") { type = NavType.StringType })) {
             MovieListScreen(
                 onNavigateBack = { navController.popBackStack() },
-                onMovieClick = { movieId ->
-                    navController.navigate(Screen.MovieDetail.createRoute(movieId))
-                }
+                onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) }
             )
         }
         composable(Screen.Groups.route) {
-            GroupsScreen(
-                onGroupClick = { groupId ->
-                    navController.navigate(Screen.GroupDetail.createRoute(groupId))
-                }
-            )
+            GroupsScreen(onGroupClick = { navController.navigate(Screen.GroupDetail.createRoute(it)) })
         }
-        composable(
-            route = Screen.GroupDetail.route,
-            arguments = listOf(navArgument("groupId") { type = NavType.StringType })
-        ) {}
+        composable(route = Screen.GroupDetail.route, arguments = listOf(navArgument("groupId") { type = NavType.StringType })) {}
         composable(Screen.Feed.route) {
-            FeedScreen(onMovieClick = { movieId ->
-                navController.navigate(Screen.MovieDetail.createRoute(movieId))
-            })
+            FeedScreen(onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) })
         }
         composable(Screen.Profile.route) {
-            ProfileScreen(
-                onSignOut = {
-                    navController.navigate(Screen.Login.route) {
-                        popUpTo(0) { this.inclusive = true }
-                    }
-                }
-            )
+            ProfileScreen(onSignOut = { navController.navigate(Screen.Login.route) { popUpTo(0) { this.inclusive = true } } })
         }
     }
 }
