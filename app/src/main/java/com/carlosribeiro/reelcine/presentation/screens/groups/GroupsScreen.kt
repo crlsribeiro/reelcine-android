@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -129,8 +130,8 @@ fun CreateGroupDialog(onDismiss: () -> Unit, onConfirm: (String, String) -> Unit
             }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(name, description) }, enabled = name.isNotBlank(), colors = ButtonDefaults.buttonColors(containerColor = Violet)) {
-                Text("Criar")
+            Button(onClick = { onConfirm(name, description) }, enabled = name.isNotBlank(), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)) {
+                Text("Criar", color = Color.White, fontWeight = FontWeight.Bold)
             }
         },
         dismissButton = {

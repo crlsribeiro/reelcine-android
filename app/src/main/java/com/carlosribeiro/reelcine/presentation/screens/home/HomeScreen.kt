@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import androidx.compose.ui.graphics.Color
 import com.carlosribeiro.reelcine.domain.model.Movie
 import com.carlosribeiro.reelcine.presentation.theme.Gold
 import com.carlosribeiro.reelcine.presentation.theme.SurfaceDark
@@ -108,7 +109,7 @@ fun HeroMovieCard(movie: Movie, onClick: () -> Unit) {
             Spacer(modifier = Modifier.height(8.dp))
             Button(
                 onClick = onClick,
-                colors = ButtonDefaults.buttonColors(containerColor = Violet)
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)
             ) {
                 Text("Assistir Trailer")
             }

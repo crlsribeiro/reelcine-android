@@ -6,6 +6,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,7 +61,7 @@ fun ForgotPasswordScreen(
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
                     onClick = onNavigateBack,
-                    colors = ButtonDefaults.buttonColors(containerColor = Violet)
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)
                 ) {
                     Text("Voltar ao login")
                 }
@@ -84,12 +86,12 @@ fun ForgotPasswordScreen(
                     onClick = { viewModel.sendResetEmail(email) },
                     modifier = Modifier.fillMaxWidth().height(52.dp),
                     enabled = !uiState.isLoading,
-                    colors = ButtonDefaults.buttonColors(containerColor = Violet)
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)
                 ) {
                     if (uiState.isLoading) {
                         CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
                     } else {
-                        Text("Enviar link de recuperação")
+                        Text("Enviar link de recuperação", color = Color.White, fontWeight = FontWeight.Bold)
                     }
                 }
                 uiState.error?.let { error ->
