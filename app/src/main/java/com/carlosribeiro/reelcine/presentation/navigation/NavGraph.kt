@@ -10,6 +10,7 @@ import androidx.navigation.navArgument
 import com.carlosribeiro.reelcine.presentation.screens.auth.ForgotPasswordScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.LoginScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.RegisterScreen
+import com.carlosribeiro.reelcine.presentation.screens.groups.GroupsScreen
 import com.carlosribeiro.reelcine.presentation.screens.home.HomeScreen
 import com.carlosribeiro.reelcine.presentation.screens.moviedetail.MovieDetailScreen
 import com.carlosribeiro.reelcine.presentation.screens.splash.SplashScreen
@@ -76,7 +77,13 @@ fun NavGraph(
         ) {
             MovieDetailScreen(onNavigateBack = { navController.popBackStack() })
         }
-        composable(Screen.Groups.route) {}
+        composable(Screen.Groups.route) {
+            GroupsScreen(
+                onGroupClick = { groupId ->
+                    navController.navigate(Screen.GroupDetail.createRoute(groupId))
+                }
+            )
+        }
         composable(
             route = Screen.GroupDetail.route,
             arguments = listOf(navArgument("groupId") { type = NavType.StringType })
