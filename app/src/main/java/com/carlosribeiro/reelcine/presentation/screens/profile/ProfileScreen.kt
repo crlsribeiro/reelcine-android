@@ -20,6 +20,7 @@ import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @Composable
 fun ProfileScreen(
+    onWatchlistClick: () -> Unit,
     onSignOut: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -79,17 +80,17 @@ fun ProfileScreen(
         ProfileMenuItem(
             icon = { Icon(Icons.Default.Bookmarks, contentDescription = null, tint = Violet) },
             title = "Minha Watchlist",
-            onClick = {}
+            onClick = onWatchlistClick
         )
         ProfileMenuItem(
             icon = { Icon(Icons.Default.History, contentDescription = null, tint = Violet) },
             title = "Histórico de Atividade",
-            onClick = {}
+            onClick = onWatchlistClick
         )
         ProfileMenuItem(
             icon = { Icon(Icons.Default.Person, contentDescription = null, tint = Violet) },
             title = "Editar Perfil",
-            onClick = {}
+            onClick = onWatchlistClick
         )
 
         Spacer(modifier = Modifier.height(16.dp))
