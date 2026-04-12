@@ -18,6 +18,7 @@ import com.carlosribeiro.reelcine.presentation.screens.movielist.MovieListScreen
 import com.carlosribeiro.reelcine.presentation.screens.profile.ProfileScreen
 import com.carlosribeiro.reelcine.presentation.screens.search.SearchScreen
 import com.carlosribeiro.reelcine.presentation.screens.splash.SplashScreen
+import com.carlosribeiro.reelcine.presentation.screens.watchlist.WatchlistScreen
 
 @Composable
 fun NavGraph(
@@ -57,6 +58,9 @@ fun NavGraph(
         composable(Screen.Search.route) {
             SearchScreen(onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) })
         }
+        composable(Screen.Watchlist.route) {
+            WatchlistScreen(onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) })
+        }
         composable(route = Screen.MovieDetail.route, arguments = listOf(navArgument("movieId") { type = NavType.IntType })) {
             MovieDetailScreen(onNavigateBack = { navController.popBackStack() })
         }
@@ -74,7 +78,11 @@ fun NavGraph(
             FeedScreen(onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) })
         }
         composable(Screen.Profile.route) {
-            ProfileScreen(onSignOut = { navController.navigate(Screen.Login.route) { popUpTo(0) { this.inclusive = true } } })
+            ProfileScreen(
+                onWatchlistClick = { navController.navigate(Screen.Watchlist.route) },
+                onSignOut = { navController.navigate(Screen.Login.route) { popUpTo(0) { this.inclusive = true } } },
+                
+            )
         }
     }
 }

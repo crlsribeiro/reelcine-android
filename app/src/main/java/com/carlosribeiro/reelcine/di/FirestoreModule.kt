@@ -26,3 +26,4 @@ abstract class FirestoreModule {
         recommendationRepositoryImpl: RecommendationRepositoryImpl
     ): RecommendationRepository
 }
+// WatchlistRepository binding added via separate module
