@@ -1,35 +1,90 @@
 # 🎬 ReelCine
 
-App social de filmes em Android com Jetpack Compose.
+> **Descubra. Compartilhe. Conecte.**
+> Uma rede social para cinéfilos — descubra filmes, compartilhe recomendações e conecte-se com amigos através de grupos privados.
 
-## Stack
-- Kotlin + Jetpack Compose + Material3
-- Clean Architecture (Domain / Data / Presentation)
-- Hilt 2.56.1 (NUNCA mudar essa versão)
-- Firebase Auth + Firestore
-- TMDB API
-- Coroutines + Flow
-- JUnit4 + MockK + Turbine
+## 📱 Sobre o Projeto
 
-## Setup
-1. Clone o repo
-2. Crie `local.properties` com `TMDB_API_KEY=sua_chave` e `sdk.dir=seu_sdk`
-3. Adicione `google-services.json` em `app/`
-4. `./gradlew installDebug`
+ReelCine é um aplicativo Android nativo desenvolvido com **Jetpack Compose** e arquitetura moderna. Consome a API do TMDB para exibir filmes em tempo real e usa o Firebase como backend completo para autenticação, banco de dados e armazenamento.
 
-## Features
-- Auth (Email + Google Sign-In)
-- Home, Search, Watchlist, Feed, Groups, Profile
-- Edit Profile, Add Recommendation
-- CI/CD GitHub Actions
-- 14 Unit Tests
+## ✨ Features
 
-## Pendente
-- GroupDetail screen
-- Notificações push (Firebase Messaging)
-- Índice Firestore watchlist (aguardando ativação no Firebase Console)
+- 🔐 **Autenticação** — Login com e-mail/senha e Google Sign-In
+- 🏠 **Home** — Filmes em alta, em cartaz, em breve e mais populares
+- 🔍 **Busca** — Pesquisa de filmes em tempo real
+- 🎬 **Detalhe do Filme** — Informações completas, trailer e avaliações
+- 📌 **Watchlist** — Salve filmes para assistir depois
+- 👥 **Grupos** — Crie grupos privados e compartilhe recomendações
+- 📢 **Feed** — Veja recomendações de todos os usuários
+- 👤 **Perfil** — Edite nome, bio e foto de perfil
+- 🌙 **Dark Mode** — Interface totalmente adaptada ao modo escuro
 
-## Versões
-- Kotlin: 2.0.21 | AGP: 8.10.1 | compileSdk: 36 | JDK: 17
-- Firebase: reelcine-d2ba6
-- SHA-1: 4e:47:06:5d:0d:d8:ba:40:b0:a6:15:8f:e7:d5:17:57:a6:56:f9:31
+## 🏗️ Arquitetura
+
+O projeto segue os princípios de **Clean Architecture** com separação em camadas:
+
+\`\`\`
+app/
+├── data/
+│   ├── remote/          # Retrofit, DTOs, API services
+│   └── repository/      # Implementações dos repositórios
+├── domain/
+│   ├── model/           # Entidades de domínio
+│   ├── repository/      # Interfaces dos repositórios
+│   └── usecase/         # Casos de uso
+└── presentation/
+    ├── navigation/      # NavGraph, Screen routes
+    ├── screens/         # Screens + ViewModels
+    └── theme/           # MaterialTheme, cores, tipografia
+\`\`\`
+
+## 🛠️ Tech Stack
+
+| Categoria | Tecnologia |
+|-----------|-----------|
+| UI | Jetpack Compose + Material 3 |
+| Arquitetura | MVVM + Clean Architecture |
+| DI | Hilt 2.56.1 |
+| Navegação | Navigation Compose |
+| Async | Kotlin Coroutines + Flow |
+| Rede | Retrofit + OkHttp |
+| Imagens | Coil |
+| Auth | Firebase Authentication |
+| Banco de Dados | Firebase Firestore |
+| API de Filmes | TMDB API |
+| Testes | JUnit4 + MockK |
+| CI/CD | GitHub Actions |
+| Linguagem | Kotlin 2.0.21 |
+| Min SDK | 26 (Android 8.0) |
+| Target SDK | 36 |
+
+## 🚀 Como Rodar
+
+1. Clone o repositório:
+\`\`\`bash
+git clone https://github.com/crlsribeiro/reelcine-android.git
+\`\`\`
+
+2. Crie o arquivo \`local.properties\` na raiz:
+\`\`\`properties
+sdk.dir=/caminho/para/seu/android/sdk
+TMDB_API_KEY=sua_api_key_aqui
+\`\`\`
+
+3. Adicione o \`google-services.json\` em \`app/\`
+
+4. Rode:
+\`\`\`bash
+./gradlew installDebug
+\`\`\`
+
+## 🧪 Testes
+
+\`\`\`bash
+./gradlew test
+\`\`\`
+
+## 👨‍💻 Autor
+
+**Carlos Ribeiro**
+[![GitHub](https://img.shields.io/badge/GitHub-crlsribeiro-181717?style=flat&logo=github)](https://github.com/crlsribeiro)
