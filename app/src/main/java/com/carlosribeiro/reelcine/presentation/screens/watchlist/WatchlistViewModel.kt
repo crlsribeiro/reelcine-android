@@ -10,12 +10,14 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class WatchlistUiState(
     val isLoading: Boolean = true,
-    val items: List<WatchlistItem> = emptyList()
+    val items: List<WatchlistItem> = emptyList(),
+    val error: String? = null
 )
 
 @HiltViewModel
@@ -35,9 +37,13 @@ class WatchlistViewModel @Inject constructor(
                 _uiState.value = WatchlistUiState(isLoading = false)
                 return@launch
             }
-            getWatchlistUseCase(userId).collect { items ->
-                _uiState.value = WatchlistUiState(isLoading = false, items = items)
-            }
+            getWatchlistUseCase(userId)
+                .catch { e ->
+                    _uiState.value = WatchlistUiState(isLoading = false, error = e.message)
+                }
+                .collect { items ->
+                    _uiState.value = WatchlistUiState(isLoading = false, items = items)
+                }
         }
     }
 
