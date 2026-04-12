@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="72"
+    android:viewportHeight="72">
+
+    <!-- Corpo da claquete -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M10,28 Q10,24 14,24 L58,24 Q62,24 62,28 L62,58 Q62,62 58,62 L14,62 Q10,62 10,58 Z"/>
+
+    <!-- Sombra interna suave no corpo -->
+    <path
+        android:fillColor="#E8E8E8"
+        android:pathData="M10,28 L62,28 L62,34 L10,34 Z"/>
+
+    <!-- Tarja preta do topo (parte fixa) -->
+    <path
+        android:fillColor="#1A1A2E"
+        android:pathData="M12,14 Q12,10 16,10 L56,10 Q60,10 60,14 L60,25 L12,25 Z"/>
+
+    <!-- Tarja móvel (inclinada) -->
+    <path
+        android:fillColor="#2D2D44"
+        android:pathData="M12,10 L60,10 L60,18 L12,22 Z"/>
+
+    <!-- Listras diagonais brancas na tarja móvel -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M18,10 L24,10 L18,22 L12,22 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,10 L36,10 L30,21 L24,21 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M42,10 L48,10 L42,19 L36,20 Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,10 L60,10 L60,14 L54,18 Z"/>
+
+    <!-- Linhas de texto no corpo (simulando campos director/camera) -->
+    <path
+        android:fillColor="#CCCCCC"
+        android:pathData="M16,38 L40,38 Q41,38 41,39.5 Q41,41 40,41 L16,41 Q15,41 15,39.5 Q15,38 16,38 Z"/>
+    <path
+        android:fillColor="#CCCCCC"
+        android:pathData="M16,45 L36,45 Q37,45 37,46.5 Q37,48 36,48 L16,48 Q15,48 15,46.5 Q15,45 16,45 Z"/>
+    <path
+        android:fillColor="#CCCCCC"
+        android:pathData="M16,52 L32,52 Q33,52 33,53.5 Q33,55 32,55 L16,55 Q15,55 15,53.5 Q15,52 16,52 Z"/>
+
+    <!-- Círculo decorativo (lens/take indicator) -->
+    <path
+        android:fillColor="#9D93F0"
+        android:pathData="M50,46 m-8,0 a8,8 0 1,0 16,0 a8,8 0 1,0 -16,0"/>
+    <path
+        android:fillColor="#6C4DE0"
+        android:pathData="M50,46 m-5,0 a5,5 0 1,0 10,0 a5,5 0 1,0 -10,0"/>
+
+</vector>

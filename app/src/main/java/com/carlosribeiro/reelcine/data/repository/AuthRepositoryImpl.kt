@@ -33,13 +33,28 @@ class AuthRepositoryImpl @Inject constructor(
             val credential = GoogleAuthProvider.getCredential(idToken, null)
             val result = auth.signInWithCredential(credential).await()
             val firebaseUser = result.user ?: return Result.failure(Exception("User not found"))
-            val user = User(
-                uid = firebaseUser.uid,
-                name = firebaseUser.displayName ?: "",
-                email = firebaseUser.email ?: "",
-                avatarUrl = firebaseUser.photoUrl?.toString() ?: ""
-            )
-            saveUserToFirestore(user)
+
+            // ✅ Verifica se usuário já existe no Firestore
+            val existingUser = getUserFromFirestore(firebaseUser.uid)
+
+            val user = if (existingUser != null) {
+                // ✅ Já existe — preserva nome e bio editados, só atualiza email e avatar
+                existingUser.copy(
+                    email = firebaseUser.email ?: existingUser.email,
+                    avatarUrl = firebaseUser.photoUrl?.toString() ?: existingUser.avatarUrl
+                )
+            } else {
+                // Primeiro login — cria com dados do Google
+                User(
+                    uid = firebaseUser.uid,
+                    name = firebaseUser.displayName ?: "",
+                    email = firebaseUser.email ?: "",
+                    avatarUrl = firebaseUser.photoUrl?.toString() ?: ""
+                )
+            }
+
+            // ✅ Salva preservando dados existentes com merge
+            saveUserToFirestoreWithMerge(user)
             Result.success(user)
         } catch (e: Exception) {
             Result.failure(e)
@@ -113,5 +128,19 @@ class AuthRepositoryImpl @Inject constructor(
             "bio" to user.bio
         )
         firestore.collection("users").document(user.uid).set(userMap).await()
+    }
+
+    // ✅ Salva apenas os campos informados sem apagar os demais
+    private suspend fun saveUserToFirestoreWithMerge(user: User) {
+        val userMap = mapOf(
+            "uid" to user.uid,
+            "name" to user.name,
+            "email" to user.email,
+            "avatarUrl" to user.avatarUrl,
+            "bio" to user.bio
+        )
+        firestore.collection("users").document(user.uid)
+            .set(userMap, com.google.firebase.firestore.SetOptions.merge())
+            .await()
     }
 }
