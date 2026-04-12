@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Bookmarks
@@ -12,10 +11,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @Composable
@@ -26,6 +30,14 @@ fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    // ✅ Recarrega do Firestore sempre que a tela volta ao foco
+    LaunchedEffect(lifecycleOwner) {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewModel.loadProfile()
+        }
+    }
 
     LaunchedEffect(uiState.isSignedOut) {
         if (uiState.isSignedOut) onSignOut()
@@ -65,6 +77,20 @@ fun ProfileScreen(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
+        // ✅ Bio exibida abaixo do email
+        val bio = uiState.user?.bio.orEmpty()
+        if (bio.isNotBlank()) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = bio,
+                style = MaterialTheme.typography.bodyMedium,
+                fontStyle = FontStyle.Italic,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+        }
+
         Spacer(modifier = Modifier.height(32.dp))
 
         Row(
@@ -84,14 +110,9 @@ fun ProfileScreen(
             onClick = onWatchlistClick
         )
         ProfileMenuItem(
-            icon = { Icon(Icons.Default.History, contentDescription = null, tint = Violet) },
-            title = "Histórico de Atividade",
-            onClick = onWatchlistClick
-        )
-        ProfileMenuItem(
             icon = { Icon(Icons.Default.Person, contentDescription = null, tint = Violet) },
             title = "Editar Perfil",
-            onClick = onWatchlistClick
+            onClick = onEditProfileClick
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -111,8 +132,17 @@ fun ProfileScreen(
 @Composable
 fun StatCard(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = value, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = Violet)
-        Text(text = label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(
+            text = value,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = Violet
+        )
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
@@ -130,7 +160,11 @@ fun ProfileMenuItem(icon: @Composable () -> Unit, title: String, onClick: () -> 
         ) {
             icon()
             Spacer(modifier = Modifier.width(16.dp))
-            Text(text = title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.weight(1f)
+            )
             Text(text = ">", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
