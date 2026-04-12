@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -38,6 +39,21 @@ import com.carlosribeiro.reelcine.presentation.theme.Violet
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
+
+// Cores locais do redesign
+private val BgTop = Color(0xFF1A1530)
+private val BgMid = Color(0xFF0D0B18)
+private val BgBottom = Color(0xFF080810)
+private val SurfaceField = Color(0xFF0F0D1E)
+private val BorderField = Color(0xFF242038)
+private val BorderDivider = Color(0xFF1E1C30)
+private val TextHint = Color(0xFF6A5FAA)
+private val TextMuted = Color(0xFF3E3A58)
+private val TextLabel = Color(0xFF5A547A)
+private val BtnGoogle = Color(0xFF16142A)
+private val BtnGoogleBorder = Color(0xFF2E2A4A)
+private val BtnPrimary = Color(0xFF6C4DE0)
+private val BtnPrimaryDisabled = Color(0xFF3D2A8A)
 
 @Composable
 fun LoginScreen(
@@ -88,11 +104,7 @@ fun LoginScreen(
             .fillMaxSize()
             .background(
                 Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF1A0533),
-                        Color(0xFF0D0118),
-                        Color(0xFF0A0A0A)
-                    )
+                    colors = listOf(BgTop, BgMid, BgBottom)
                 )
             )
     ) {
@@ -103,86 +115,152 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = "🎬", fontSize = 48.sp)
-            Spacer(modifier = Modifier.height(12.dp))
 
+            // ── Header: claquete real ──────────────────────────────────────
+            Icon(
+                painter = painterResource(id = R.drawable.ic_clapperboard),
+                contentDescription = "ReelCine",
+                tint = Color.Unspecified,
+                modifier = Modifier.size(72.dp)
+            )
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            // ── Logo ──────────────────────────────────────────────────────
             Text(
                 text = buildAnnotatedString {
-                    withStyle(SpanStyle(fontWeight = FontWeight.Black, color = Color.White, fontSize = 48.sp)) {
-                        append("Reel")
-                    }
-                    withStyle(SpanStyle(fontWeight = FontWeight.Light, fontStyle = FontStyle.Italic, color = Violet, fontSize = 48.sp)) {
-                        append("Cine")
-                    }
+                    withStyle(
+                        SpanStyle(
+                            fontWeight = FontWeight.Black,
+                            color = Color.White,
+                            fontSize = 48.sp
+                        )
+                    ) { append("Reel") }
+                    withStyle(
+                        SpanStyle(
+                            fontWeight = FontWeight.Light,
+                            fontStyle = FontStyle.Italic,
+                            color = Violet,
+                            fontSize = 48.sp
+                        )
+                    ) { append("Cine") }
                 }
             )
 
             Spacer(modifier = Modifier.height(8.dp))
+
             Text(
                 text = "DESCUBRA. COMPARTILHE. CONECTE.",
                 style = MaterialTheme.typography.labelSmall,
-                color = Color.White.copy(alpha = 0.5f),
-                letterSpacing = 2.sp,
+                color = TextLabel,
+                letterSpacing = 2.5.sp,
                 textAlign = TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(48.dp))
 
-            OutlinedButton(
+            // ── Botão Google ──────────────────────────────────────────────
+            Button(
                 onClick = { signInWithGoogle() },
-                modifier = Modifier.fillMaxWidth().height(52.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
-                border = androidx.compose.foundation.BorderStroke(1.dp, Color.White.copy(alpha = 0.4f)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp),
+                shape = RoundedCornerShape(16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = BtnGoogle,
+                    contentColor = Color(0xFFD0CCE8),
+                    disabledContainerColor = BtnGoogle.copy(alpha = 0.5f),
+                    disabledContentColor = Color(0xFFD0CCE8).copy(alpha = 0.4f)
+                ),
+                border = androidx.compose.foundation.BorderStroke(1.dp, BtnGoogleBorder),
                 enabled = !uiState.isLoading
             ) {
-                Text("Continuar com Google", color = Color.White, fontWeight = FontWeight.Medium)
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_google),
+                    contentDescription = null,
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    "Continuar com Google",
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 14.sp
+                )
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
+            // ── Divisor E-MAIL ────────────────────────────────────────────
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.White.copy(alpha = 0.2f))
-                Text(" E-MAIL ", style = MaterialTheme.typography.labelSmall, color = Color.White.copy(alpha = 0.4f), letterSpacing = 2.sp)
-                HorizontalDivider(modifier = Modifier.weight(1f), color = Color.White.copy(alpha = 0.2f))
+                HorizontalDivider(modifier = Modifier.weight(1f), color = BorderDivider)
+                Text(
+                    " E-MAIL ",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TextMuted,
+                    letterSpacing = 2.5.sp
+                )
+                HorizontalDivider(modifier = Modifier.weight(1f), color = BorderDivider)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
+            // ── Campo E-mail ──────────────────────────────────────────────
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                placeholder = { Text("E-mail", color = Color.White.copy(alpha = 0.4f)) },
-                leadingIcon = { Icon(Icons.Default.Mail, contentDescription = null, tint = Color.White.copy(alpha = 0.5f)) },
+                placeholder = {
+                    Text("E-mail", color = TextHint.copy(alpha = 0.6f), fontSize = 14.sp)
+                },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Mail,
+                        contentDescription = null,
+                        tint = TextHint,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                shape = RoundedCornerShape(14.dp),
                 colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = SurfaceField,
+                    unfocusedContainerColor = SurfaceField,
                     focusedBorderColor = Violet,
-                    unfocusedBorderColor = Color.White.copy(alpha = 0.2f),
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
+                    unfocusedBorderColor = BorderField,
+                    focusedTextColor = Color(0xFFC8C4E8),
+                    unfocusedTextColor = Color(0xFFC8C4E8),
                     cursorColor = Violet
-                ),
-                shape = RoundedCornerShape(12.dp)
+                )
             )
 
             Spacer(modifier = Modifier.height(12.dp))
 
+            // ── Campo Senha ───────────────────────────────────────────────
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                placeholder = { Text("Senha", color = Color.White.copy(alpha = 0.4f)) },
-                leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null, tint = Color.White.copy(alpha = 0.5f)) },
+                placeholder = {
+                    Text("Senha", color = TextHint.copy(alpha = 0.6f), fontSize = 14.sp)
+                },
+                leadingIcon = {
+                    Icon(
+                        Icons.Default.Lock,
+                        contentDescription = null,
+                        tint = TextHint,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
                 trailingIcon = {
                     IconButton(onClick = { passwordVisible = !passwordVisible }) {
                         Icon(
                             if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                             contentDescription = null,
-                            tint = Color.White.copy(alpha = 0.5f)
+                            tint = TextMuted
                         )
                     }
                 },
@@ -190,25 +268,28 @@ fun LoginScreen(
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                shape = RoundedCornerShape(14.dp),
                 colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = SurfaceField,
+                    unfocusedContainerColor = SurfaceField,
                     focusedBorderColor = Violet,
-                    unfocusedBorderColor = Color.White.copy(alpha = 0.2f),
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
+                    unfocusedBorderColor = BorderField,
+                    focusedTextColor = Color(0xFFC8C4E8),
+                    unfocusedTextColor = Color(0xFFC8C4E8),
                     cursorColor = Violet
-                ),
-                shape = RoundedCornerShape(12.dp)
+                )
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // ── Esqueceu senha ────────────────────────────────────────────
             TextButton(
                 onClick = onNavigateToForgotPassword,
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
                     "Esqueceu sua senha?",
-                    color = Color.White.copy(alpha = 0.7f),
+                    color = Violet,
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -216,40 +297,48 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            // ── Botão principal ───────────────────────────────────────────
             Button(
                 onClick = { viewModel.signInWithEmail(email, password) },
-                modifier = Modifier.fillMaxWidth().height(56.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp),
                 enabled = !uiState.isLoading,
-                shape = RoundedCornerShape(14.dp),
+                shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF6D28D9),
+                    containerColor = BtnPrimary,
                     contentColor = Color.White,
-                    disabledContainerColor = Color(0xFF4C1D95),
+                    disabledContainerColor = BtnPrimaryDisabled,
                     disabledContentColor = Color.White.copy(alpha = 0.5f)
                 )
             ) {
                 if (uiState.isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.size(22.dp), color = Color.White, strokeWidth = 2.dp)
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(22.dp),
+                        color = Color.White,
+                        strokeWidth = 2.dp
+                    )
                 } else {
                     Text(
                         "ENTRAR NA EXPERIÊNCIA",
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
-                        letterSpacing = 1.sp,
-                        fontSize = 14.sp
+                        letterSpacing = 2.sp,
+                        fontSize = 13.sp
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
+            // ── Criar conta ───────────────────────────────────────────────
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
                     "Ainda não faz parte? ",
-                    color = Color.White.copy(alpha = 0.6f),
+                    color = TextMuted,
                     fontSize = 14.sp
                 )
                 TextButton(
@@ -265,6 +354,7 @@ fun LoginScreen(
                 }
             }
 
+            // ── Erro ──────────────────────────────────────────────────────
             uiState.error?.let { error ->
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(

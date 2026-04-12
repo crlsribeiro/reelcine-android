@@ -85,13 +85,29 @@ fun HeroMovieCard(movie: Movie, onClick: () -> Unit) {
         ImageRequest.Builder(context).data(movie.backdropPath).crossfade(false)
             .memoryCacheKey(movie.backdropPath).diskCacheKey(movie.backdropPath).build()
     }
-    Box(modifier = Modifier.fillMaxWidth().height(420.dp).clickable(onClick = onClick)) {
-        AsyncImage(model = imageRequest, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
+    // ✅ Box sem clickable — só o botão navega
+    Box(modifier = Modifier.fillMaxWidth().height(420.dp)) {
+        AsyncImage(
+            model = imageRequest,
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
         Box(modifier = Modifier.fillMaxSize().background(heroGradient))
         Column(modifier = Modifier.align(Alignment.BottomStart).padding(16.dp)) {
-            Text(text = movie.title, style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+            Text(
+                text = movie.title,
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold
+            )
             Spacer(modifier = Modifier.height(8.dp))
-            Button(onClick = onClick, colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)) {
+            Button(
+                onClick = onClick, // ✅ único ponto de clique
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6D28D9),
+                    contentColor = Color.White
+                )
+            ) {
                 Text("Assistir Trailer", color = Color.White, fontWeight = FontWeight.Bold)
             }
         }
@@ -112,12 +128,23 @@ fun MovieSection(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = title, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text(text = "Ver tudo", style = MaterialTheme.typography.bodyMedium, color = Violet,
-                modifier = Modifier.clickable(onClick = onSeeAllClick))
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "Ver tudo",
+                style = MaterialTheme.typography.bodyMedium,
+                color = Violet,
+                modifier = Modifier.clickable(onClick = onSeeAllClick)
+            )
         }
         Spacer(modifier = Modifier.height(12.dp))
-        LazyRow(contentPadding = PaddingValues(horizontal = 16.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        LazyRow(
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
             items(movies, key = { it.id }) { movie ->
                 MovieCard(movie = movie, onClick = { onMovieClick(movie.id) })
             }
@@ -134,20 +161,40 @@ fun MovieCard(movie: Movie, onClick: () -> Unit) {
     }
     Column(modifier = Modifier.width(130.dp).clickable(onClick = onClick)) {
         Box {
-            AsyncImage(model = imageRequest, contentDescription = null, contentScale = ContentScale.Crop,
-                modifier = Modifier.width(130.dp).height(190.dp).clip(RoundedCornerShape(12.dp)).background(SurfaceDark))
+            AsyncImage(
+                model = imageRequest,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .width(130.dp)
+                    .height(190.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(SurfaceDark)
+            )
             Row(
-                modifier = Modifier.align(Alignment.TopStart).padding(6.dp)
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(6.dp)
                     .background(color = ratingBadgeColor, shape = RoundedCornerShape(6.dp))
                     .padding(horizontal = 6.dp, vertical = 2.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = "★", color = Gold, fontSize = 10.sp)
                 Spacer(modifier = Modifier.width(2.dp))
-                Text(text = String.format("%.1f", movie.voteAverage), color = Color.White, fontSize = 10.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = String.format("%.1f", movie.voteAverage),
+                    color = Color.White,
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
         Spacer(modifier = Modifier.height(6.dp))
-        Text(text = movie.title, style = MaterialTheme.typography.bodyMedium, maxLines = 2, color = MaterialTheme.colorScheme.onSurface)
+        Text(
+            text = movie.title,
+            style = MaterialTheme.typography.bodyMedium,
+            maxLines = 2,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }

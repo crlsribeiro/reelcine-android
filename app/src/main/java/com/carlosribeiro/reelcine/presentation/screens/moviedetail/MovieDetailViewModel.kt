@@ -49,12 +49,20 @@ class MovieDetailViewModel @Inject constructor(
     private fun loadMovieDetail() {
         viewModelScope.launch {
             _uiState.value = MovieDetailUiState(isLoading = true)
+
             val movie = getMovieDetailUseCase(movieId).getOrNull()
             val videos = getMovieVideosUseCase(movieId).getOrElse { emptyList() }
             val trailer = videos.firstOrNull { it.isYouTubeTrailer }
             val userId = getCurrentUserUseCase()?.uid ?: ""
             val inWatchlist = if (userId.isNotBlank()) isInWatchlistUseCase(movieId, userId) else false
-            _uiState.value = MovieDetailUiState(movie = movie, trailer = trailer, isInWatchlist = inWatchlist)
+
+            // ✅ isLoading = false explícito — sem isso a tela trava no spinner
+            _uiState.value = MovieDetailUiState(
+                isLoading = false,
+                movie = movie,
+                trailer = trailer,
+                isInWatchlist = inWatchlist
+            )
         }
     }
 
@@ -66,14 +74,16 @@ class MovieDetailViewModel @Inject constructor(
                 removeFromWatchlistUseCase(movieId, userId)
                 _uiState.value = _uiState.value.copy(isInWatchlist = false)
             } else {
-                addToWatchlistUseCase(WatchlistItem(
-                    movieId = movie.id,
-                    movieTitle = movie.title,
-                    posterPath = movie.posterPath,
-                    backdropPath = movie.backdropPath,
-                    voteAverage = movie.voteAverage,
-                    userId = userId
-                ))
+                addToWatchlistUseCase(
+                    WatchlistItem(
+                        movieId = movie.id,
+                        movieTitle = movie.title,
+                        posterPath = movie.posterPath,
+                        backdropPath = movie.backdropPath,
+                        voteAverage = movie.voteAverage,
+                        userId = userId
+                    )
+                )
                 _uiState.value = _uiState.value.copy(isInWatchlist = true)
             }
         }
