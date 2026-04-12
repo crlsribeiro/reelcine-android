@@ -20,6 +20,7 @@ import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @Composable
 fun ProfileScreen(
+    onEditProfileClick: () -> Unit,
     onWatchlistClick: () -> Unit,
     onSignOut: () -> Unit,
     viewModel: ProfileViewModel = hiltViewModel()

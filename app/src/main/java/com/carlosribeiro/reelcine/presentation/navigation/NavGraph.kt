@@ -18,6 +18,7 @@ import com.carlosribeiro.reelcine.presentation.screens.movielist.MovieListScreen
 import com.carlosribeiro.reelcine.presentation.screens.profile.ProfileScreen
 import com.carlosribeiro.reelcine.presentation.screens.search.SearchScreen
 import com.carlosribeiro.reelcine.presentation.screens.splash.SplashScreen
+import com.carlosribeiro.reelcine.presentation.screens.editprofile.EditProfileScreen
 import com.carlosribeiro.reelcine.presentation.screens.watchlist.WatchlistScreen
 
 @Composable
@@ -74,11 +75,15 @@ fun NavGraph(
             GroupsScreen(onGroupClick = { navController.navigate(Screen.GroupDetail.createRoute(it)) })
         }
         composable(route = Screen.GroupDetail.route, arguments = listOf(navArgument("groupId") { type = NavType.StringType })) {}
+        composable(Screen.EditProfile.route) {
+            EditProfileScreen(onNavigateBack = { navController.popBackStack() })
+        }
         composable(Screen.Feed.route) {
             FeedScreen(onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) })
         }
         composable(Screen.Profile.route) {
             ProfileScreen(
+                onEditProfileClick = { navController.navigate(Screen.EditProfile.route) },
                 onWatchlistClick = { navController.navigate(Screen.Watchlist.route) },
                 onSignOut = { navController.navigate(Screen.Login.route) { popUpTo(0) { this.inclusive = true } } },
                 
