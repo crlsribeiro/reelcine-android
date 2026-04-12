@@ -11,6 +11,7 @@ import com.carlosribeiro.reelcine.presentation.screens.auth.ForgotPasswordScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.LoginScreen
 import com.carlosribeiro.reelcine.presentation.screens.auth.RegisterScreen
 import com.carlosribeiro.reelcine.presentation.screens.feed.FeedScreen
+import com.carlosribeiro.reelcine.presentation.screens.groupdetail.GroupDetailScreen
 import com.carlosribeiro.reelcine.presentation.screens.groups.GroupsScreen
 import com.carlosribeiro.reelcine.presentation.screens.home.HomeScreen
 import com.carlosribeiro.reelcine.presentation.screens.moviedetail.MovieDetailScreen
@@ -74,7 +75,12 @@ fun NavGraph(
         composable(Screen.Groups.route) {
             GroupsScreen(onGroupClick = { navController.navigate(Screen.GroupDetail.createRoute(it)) })
         }
-        composable(route = Screen.GroupDetail.route, arguments = listOf(navArgument("groupId") { type = NavType.StringType })) {}
+        composable(route = Screen.GroupDetail.route, arguments = listOf(navArgument("groupId") { type = NavType.StringType })) {
+            GroupDetailScreen(
+                onNavigateBack = { navController.popBackStack() },
+                onMovieClick = { navController.navigate(Screen.MovieDetail.createRoute(it)) }
+            )
+        }
         composable(Screen.EditProfile.route) {
             EditProfileScreen(onNavigateBack = { navController.popBackStack() })
         }
@@ -85,8 +91,7 @@ fun NavGraph(
             ProfileScreen(
                 onEditProfileClick = { navController.navigate(Screen.EditProfile.route) },
                 onWatchlistClick = { navController.navigate(Screen.Watchlist.route) },
-                onSignOut = { navController.navigate(Screen.Login.route) { popUpTo(0) { this.inclusive = true } } },
-                
+                onSignOut = { navController.navigate(Screen.Login.route) { popUpTo(0) { this.inclusive = true } } }
             )
         }
     }
