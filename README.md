@@ -22,6 +22,8 @@ ReelCine é um aplicativo Android nativo desenvolvido com **Jetpack Compose** e 
 ## 🏗️ Arquitetura
 
 O projeto segue os princípios de **Clean Architecture** com separação em camadas:
+
+\`\`\`
 app/
 ├── data/
 │   ├── remote/          # Retrofit, DTOs, API services
@@ -31,9 +33,10 @@ app/
 │   ├── repository/      # Interfaces dos repositórios
 │   └── usecase/         # Casos de uso
 └── presentation/
-├── navigation/      # NavGraph, Screen routes
-├── screens/         # Screens + ViewModels
-└── theme/           # MaterialTheme, cores, tipografia
+    ├── navigation/      # NavGraph, Screen routes
+    ├── screens/         # Screens + ViewModels
+    └── theme/           # MaterialTheme, cores, tipografia
+\`\`\`
 
 ## 🛠️ Tech Stack
 
@@ -58,28 +61,28 @@ app/
 ## 🚀 Como Rodar
 
 1. Clone o repositório:
-```bash
+\`\`\`bash
 git clone https://github.com/crlsribeiro/reelcine-android.git
-```
+\`\`\`
 
-2. Crie o arquivo `local.properties` na raiz:
-```properties
+2. Crie o arquivo \`local.properties\` na raiz:
+\`\`\`properties
 sdk.dir=/caminho/para/seu/android/sdk
 TMDB_API_KEY=sua_api_key_aqui
-```
+\`\`\`
 
-3. Adicione o `google-services.json` em `app/`
+3. Adicione o \`google-services.json\` em \`app/\`
 
 4. Rode:
-```bash
+\`\`\`bash
 ./gradlew installDebug
-```
+\`\`\`
 
 ## 🧪 Testes
 
-```bash
+\`\`\`bash
 ./gradlew test
-```
+\`\`\`
 
 ## 👨‍💻 Autor
 
