@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.carlosribeiro.reelcine.domain.usecase.auth.SignInWithEmailUseCase
 import com.carlosribeiro.reelcine.domain.usecase.auth.SignInWithGoogleUseCase
+import com.carlosribeiro.reelcine.service.FcmTokenManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,7 +31,10 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = LoginUiState(isLoading = true)
             signInWithEmailUseCase(email, password)
-                .onSuccess { _uiState.value = LoginUiState(isSuccess = true) }
+                .onSuccess {
+                    FcmTokenManager.saveToken()
+                    _uiState.value = LoginUiState(isSuccess = true)
+                }
                 .onFailure { _uiState.value = LoginUiState(error = it.message) }
         }
     }
@@ -39,7 +43,10 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = LoginUiState(isLoading = true)
             signInWithGoogleUseCase(idToken)
-                .onSuccess { _uiState.value = LoginUiState(isSuccess = true) }
+                .onSuccess {
+                    FcmTokenManager.saveToken()
+                    _uiState.value = LoginUiState(isSuccess = true)
+                }
                 .onFailure { _uiState.value = LoginUiState(error = it.message) }
         }
     }
