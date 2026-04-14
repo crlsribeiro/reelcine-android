@@ -85,3 +85,4 @@ TMDB_API_KEY=sua_api_key_aqui
 
 **Carlos Ribeiro**
 [![GitHub](https://img.shields.io/badge/GitHub-crlsribeiro-181717?style=flat&logo=github)](https://github.com/crlsribeiro)
+
