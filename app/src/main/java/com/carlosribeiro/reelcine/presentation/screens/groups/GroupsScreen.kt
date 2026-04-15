@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Group
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -26,16 +27,23 @@ fun GroupsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(uiState.joinSuccess) {
+        uiState.joinSuccess?.let { group ->
+            onGroupClick(group.id)
+            viewModel.clearJoinSuccess()
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             Text(
-                text = "Your Cinema Circles",
+                text = "Seus Grupos",
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(16.dp)
             )
             Text(
-                text = "Private discussion groups and recommendations",
+                text = "Grupos privados de recomendações",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.padding(horizontal = 16.dp)
@@ -52,7 +60,13 @@ fun GroupsScreen(
                         Icon(Icons.Default.Group, contentDescription = null, modifier = Modifier.size(64.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(modifier = Modifier.height(16.dp))
                         Text("Nenhum grupo ainda", style = MaterialTheme.typography.titleMedium)
-                        Text("Crie um grupo para começar!", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text("Crie ou entre em um grupo!", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        OutlinedButton(onClick = { viewModel.showJoinDialog() }) {
+                            Icon(Icons.Default.PersonAdd, contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Entrar com código")
+                        }
                     }
                 }
             } else {
@@ -64,12 +78,23 @@ fun GroupsScreen(
             }
         }
 
-        FloatingActionButton(
-            onClick = { viewModel.showCreateDialog() },
+        // FABs
+        Column(
             modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
-            containerColor = Violet
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Icon(Icons.Default.Add, contentDescription = "Criar grupo")
+            SmallFloatingActionButton(
+                onClick = { viewModel.showJoinDialog() },
+                containerColor = MaterialTheme.colorScheme.surfaceVariant
+            ) {
+                Icon(Icons.Default.PersonAdd, contentDescription = "Entrar com código")
+            }
+            FloatingActionButton(
+                onClick = { viewModel.showCreateDialog() },
+                containerColor = Violet
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "Criar grupo")
+            }
         }
     }
 
@@ -78,6 +103,19 @@ fun GroupsScreen(
             onDismiss = { viewModel.hideCreateDialog() },
             onConfirm = { name, description -> viewModel.createGroup(name, description) }
         )
+    }
+
+    if (uiState.showJoinDialog) {
+        JoinGroupDialog(
+            onDismiss = { viewModel.hideJoinDialog() },
+            onConfirm = { code -> viewModel.joinGroupByCode(code) }
+        )
+    }
+
+    uiState.error?.let { error ->
+        LaunchedEffect(error) {
+            viewModel.clearError()
+        }
     }
 }
 
@@ -132,6 +170,46 @@ fun CreateGroupDialog(onDismiss: () -> Unit, onConfirm: (String, String) -> Unit
         confirmButton = {
             Button(onClick = { onConfirm(name, description) }, enabled = name.isNotBlank(), colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)) {
                 Text("Criar", color = Color.White, fontWeight = FontWeight.Bold)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text("Cancelar") }
+        }
+    )
+}
+
+@Composable
+fun JoinGroupDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
+    var code by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Entrar em um grupo") },
+        text = {
+            Column {
+                Text(
+                    text = "Digite o código de convite do grupo:",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                OutlinedTextField(
+                    value = code,
+                    onValueChange = { code = it.uppercase().take(6) },
+                    label = { Text("Código (ex: ABC123)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Violet)
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = { onConfirm(code) },
+                enabled = code.length == 6,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)
+            ) {
+                Text("Entrar", color = Color.White, fontWeight = FontWeight.Bold)
             }
         },
         dismissButton = {

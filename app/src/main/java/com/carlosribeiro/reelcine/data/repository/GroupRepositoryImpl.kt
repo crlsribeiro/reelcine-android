@@ -28,15 +28,43 @@ class GroupRepositoryImpl @Inject constructor(
 
     override suspend fun createGroup(name: String, description: String, adminId: String): Result<Group> {
         return try {
+            val inviteCode = generateInviteCode()
             val group = hashMapOf(
                 "name" to name,
                 "description" to description,
                 "adminId" to adminId,
                 "members" to listOf(adminId),
-                "memberCount" to 1
+                "memberCount" to 1,
+                "inviteCode" to inviteCode
             )
             val doc = firestore.collection("groups").add(group).await()
-            Result.success(Group(id = doc.id, name = name, description = description, adminId = adminId, members = listOf(adminId), memberCount = 1))
+            Result.success(Group(
+                id = doc.id, name = name, description = description,
+                adminId = adminId, members = listOf(adminId),
+                memberCount = 1, inviteCode = inviteCode
+            ))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun joinGroupByCode(inviteCode: String, userId: String): Result<Group> {
+        return try {
+            val snapshot = firestore.collection("groups")
+                .whereEqualTo("inviteCode", inviteCode.uppercase().trim())
+                .get().await()
+            val doc = snapshot.documents.firstOrNull()
+                ?: return Result.failure(Exception("Código inválido ou grupo não encontrado"))
+            val groupId = doc.id
+            val members = doc.get("members") as? List<String> ?: emptyList()
+            if (!members.contains(userId)) {
+                firestore.collection("groups").document(groupId)
+                    .update("members", members + userId, "memberCount", members.size + 1)
+                    .await()
+            }
+            val group = doc.toObject(Group::class.java)?.copy(id = groupId)
+                ?: return Result.failure(Exception("Erro ao carregar grupo"))
+            Result.success(group)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -84,5 +112,10 @@ class GroupRepositoryImpl @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    private fun generateInviteCode(): String {
+        val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        return (1..6).map { chars.random() }.joinToString("")
     }
 }

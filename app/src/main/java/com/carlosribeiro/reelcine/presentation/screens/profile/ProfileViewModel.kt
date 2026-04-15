@@ -17,7 +17,10 @@ import javax.inject.Inject
 data class ProfileUiState(
     val user: User? = null,
     val isLoading: Boolean = false,
-    val isSignedOut: Boolean = false
+    val isSignedOut: Boolean = false,
+    val movieCount: Int = 0,
+    val reviewCount: Int = 0,
+    val groupCount: Int = 0
 )
 
 @HiltViewModel
@@ -51,11 +54,28 @@ class ProfileViewModel @Inject constructor(
                         avatarUrl = doc.getString("avatarUrl") ?: authUser.avatarUrl,
                         bio = doc.getString("bio") ?: ""
                     )
-                } else {
-                    authUser
-                }
-                _uiState.value = ProfileUiState(user = user)
+                } else authUser
+
+                val watchlistCount = firestore.collection("watchlist")
+                    .whereEqualTo("userId", authUser.uid)
+                    .get().await().size()
+
+                val recommendationCount = firestore.collection("recommendations")
+                    .whereEqualTo("userId", authUser.uid)
+                    .get().await().size()
+
+                val groupCount = firestore.collection("groups")
+                    .whereArrayContains("members", authUser.uid)
+                    .get().await().size()
+
+                _uiState.value = ProfileUiState(
+                    user = user,
+                    movieCount = watchlistCount,
+                    reviewCount = recommendationCount,
+                    groupCount = groupCount
+                )
             } catch (e: Exception) {
+                android.util.Log.e("ProfileVM", "Erro: ${e.message}", e)
                 _uiState.value = ProfileUiState(user = authUser)
             }
         }

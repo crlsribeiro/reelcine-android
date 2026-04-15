@@ -97,9 +97,9 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            StatCard(label = "Filmes", value = "0")
-            StatCard(label = "Críticas", value = "0")
-            StatCard(label = "Grupos", value = "0")
+            StatCard(label = "Filmes", value = uiState.movieCount.toString())
+            StatCard(label = "Recomendações", value = uiState.reviewCount.toString())
+            StatCard(label = "Grupos", value = uiState.groupCount.toString())
         }
 
         Spacer(modifier = Modifier.height(32.dp))
