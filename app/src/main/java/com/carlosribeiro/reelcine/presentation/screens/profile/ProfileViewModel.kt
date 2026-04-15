@@ -75,6 +75,7 @@ class ProfileViewModel @Inject constructor(
                     groupCount = groupCount
                 )
             } catch (e: Exception) {
+                android.util.Log.e("ProfileVM", "Erro: ${e.message}", e)
                 _uiState.value = ProfileUiState(user = authUser)
             }
         }

@@ -7,6 +7,7 @@ import com.carlosribeiro.reelcine.domain.model.Group
 import com.carlosribeiro.reelcine.domain.model.Recommendation
 import com.carlosribeiro.reelcine.domain.usecase.auth.GetCurrentUserUseCase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,6 +38,7 @@ class GroupDetailViewModel @Inject constructor(
 
     init {
         loadGroupDetail()
+        listenToRecommendations()
     }
 
     fun loadGroupDetail() {
@@ -45,10 +47,8 @@ class GroupDetailViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            _uiState.value = GroupDetailUiState(isLoading = true)
             try {
                 val userId = getCurrentUserUseCase()?.uid ?: ""
-
                 val doc = firestore.collection("groups").document(groupId).get().await()
                 val members = doc.get("members") as? List<String> ?: emptyList()
                 val group = Group(
@@ -57,44 +57,50 @@ class GroupDetailViewModel @Inject constructor(
                     description = doc.getString("description") ?: "",
                     adminId = doc.getString("adminId") ?: "",
                     members = members,
-                    memberCount = members.size
+                    memberCount = members.size,
+                    inviteCode = doc.getString("inviteCode") ?: ""
                 )
-
-                val recsSnapshot = firestore.collection("groups")
-                    .document(groupId)
-                    .collection("recommendations")
-                    .orderBy("createdAt", com.google.firebase.firestore.Query.Direction.DESCENDING)
-                    .limit(20)
-                    .get()
-                    .await()
-
-                val recommendations = recsSnapshot.documents.mapNotNull { recDoc ->
-                    try {
-                        Recommendation(
-                            id = recDoc.id,
-                            movieId = (recDoc.getLong("movieId") ?: 0L).toInt(),
-                            movieTitle = recDoc.getString("movieTitle") ?: "",
-                            posterPath = recDoc.getString("posterPath") ?: "",
-                            backdropPath = recDoc.getString("backdropPath") ?: "",
-                            comment = recDoc.getString("comment") ?: "",
-                            userId = recDoc.getString("userId") ?: "",
-                            userName = recDoc.getString("userName") ?: "",
-                            groupId = groupId
-                        )
-                    } catch (e: Exception) { null }
-                }
-
-                _uiState.value = GroupDetailUiState(
+                _uiState.value = _uiState.value.copy(
                     isLoading = false,
                     group = group,
-                    recommendations = recommendations,
                     isAdmin = group.adminId == userId,
                     isMember = members.contains(userId)
                 )
             } catch (e: Exception) {
-                _uiState.value = GroupDetailUiState(isLoading = false, error = e.message)
+                _uiState.value = _uiState.value.copy(isLoading = false, error = e.message)
             }
         }
+    }
+
+    private fun listenToRecommendations() {
+        if (groupId.isBlank()) return
+        firestore.collection("recommendations")
+            .whereEqualTo("groupId", groupId)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    _uiState.value = _uiState.value.copy(error = error.message)
+                    return@addSnapshotListener
+                }
+                val recommendations = snapshot?.documents?.mapNotNull { doc ->
+                    try {
+                        Recommendation(
+                            id = doc.id,
+                            movieId = (doc.getLong("movieId") ?: 0L).toInt(),
+                            movieTitle = doc.getString("movieTitle") ?: "",
+                            posterPath = doc.getString("posterPath") ?: "",
+                            backdropPath = doc.getString("backdropPath") ?: "",
+                            comment = doc.getString("comment") ?: "",
+                            rating = (doc.getDouble("rating") ?: 0.0).toFloat(),
+                            userId = doc.getString("userId") ?: "",
+                            userName = doc.getString("userName") ?: "",
+                            groupId = groupId,
+                            timestamp = doc.getLong("timestamp") ?: 0L
+                        )
+                    } catch (e: Exception) { null }
+                } ?: emptyList()
+                _uiState.value = _uiState.value.copy(recommendations = recommendations)
+            }
     }
 
     fun joinGroup() {
