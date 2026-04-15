@@ -4,9 +4,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -32,6 +32,7 @@ fun ProfileScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
+    // ✅ Recarrega do Firestore sempre que a tela volta ao foco
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             viewModel.loadProfile()
@@ -76,6 +77,7 @@ fun ProfileScreen(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
+        // ✅ Bio exibida abaixo do email
         val bio = uiState.user?.bio.orEmpty()
         if (bio.isNotBlank()) {
             Spacer(modifier = Modifier.height(8.dp))
@@ -96,7 +98,7 @@ fun ProfileScreen(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             StatCard(label = "Filmes", value = uiState.movieCount.toString())
-            StatCard(label = "Críticas", value = uiState.reviewCount.toString())
+            StatCard(label = "Recomendações", value = uiState.reviewCount.toString())
             StatCard(label = "Grupos", value = uiState.groupCount.toString())
         }
 
