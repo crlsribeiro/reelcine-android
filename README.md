@@ -1,3 +1,5 @@
+![Android CI](https://github.com/crlsribeiro/reelcine-android/actions/workflows/android-ci.yml/badge.svg)
+
 # 🎬 ReelCine
 
 > **Descubra. Compartilhe. Conecte.**
