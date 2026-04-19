@@ -83,6 +83,16 @@ TMDB_API_KEY=sua_api_key_aqui
 ./gradlew test
 ```
 
+## 📸 Screenshots
+
+| Splash | Login | Home |
+|--------|-------|------|
+| ![Splash](app/screenshots/02_Splash.png) | ![Login](app/screenshots/03_Login.png) | ![Home](app/screenshots/06_Home.png) |
+
+| Busca | Comunidade | Perfil |
+|-------|------------|--------|
+| ![Search](app/screenshots/09_Search.png) | ![Community](app/screenshots/11_Community.png) | ![Profile](app/screenshots/12_Profile.png) |
+
 ## 👨‍💻 Autor
 
 **Carlos Ribeiro**
