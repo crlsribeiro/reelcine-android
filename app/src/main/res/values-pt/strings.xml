@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">ReelCine</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Buscar</string>
+    <string name="nav_groups">Grupos</string>
+    <string name="nav_feed">Feed</string>
+    <string name="nav_profile">Perfil</string>
+
+    <!-- Login -->
+    <string name="login_tagline">DESCUBRA. COMPARTILHE. CONECTE.</string>
+    <string name="login_google">Continuar com Google</string>
+    <string name="login_password">Senha</string>
+    <string name="login_forgot_password">Esqueceu sua senha?</string>
+    <string name="login_button">ENTRAR NA EXPERIÊNCIA</string>
+    <string name="login_no_account">Ainda não faz parte? </string>
+    <string name="login_create_account">Crie sua conta</string>
+
+    <!-- Register -->
+    <string name="register_title">Criar conta</string>
+    <string name="register_subtitle">Junte-se à comunidade ReelCine</string>
+    <string name="register_name">Nome</string>
+    <string name="register_already_have_account">Já tem conta? </string>
+    <string name="register_sign_in">Entrar</string>
+    <string name="register_button">Criar conta</string>
+
+    <!-- Home -->
+    <string name="home_watch_trailer">Assistir Trailer</string>
+    <string name="home_trending">🔥 Em Alta Hoje</string>
+    <string name="home_now_playing">🎭 Em Cartaz</string>
+    <string name="home_upcoming">🚀 Em Breve</string>
+    <string name="home_popular">⭐ Mais Populares</string>
+    <string name="home_top_rated">🏆 Melhor Avaliados</string>
+    <string name="home_see_all">Ver tudo</string>
+
+    <!-- Search -->
+    <string name="search_title">Buscar</string>
+    <string name="search_hint">Buscar filmes...</string>
+    <string name="search_empty">Nenhum filme encontrado</string>
+    <string name="search_empty_subtitle">Tente buscar outro título</string>
+    <string name="search_placeholder">Busque seu filme favorito</string>
+    <string name="search_placeholder_subtitle">Digite pelo menos 2 caracteres</string>
+
+    <!-- Profile -->
+    <string name="profile_default_name">Usuário</string>
+    <string name="profile_movies">Filmes</string>
+    <string name="profile_recommendations">Recomendações</string>
+    <string name="profile_groups">Grupos</string>
+    <string name="profile_watchlist">Minha Watchlist</string>
+    <string name="profile_edit">Editar Perfil</string>
+    <string name="profile_sign_out">Sair da conta</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Editar Perfil</string>
+    <string name="edit_profile_back">Voltar</string>
+    <string name="edit_profile_name">Nome</string>
+    <string name="edit_profile_email_hint">O e-mail não pode ser alterado</string>
+    <string name="edit_profile_bio">Bio</string>
+    <string name="edit_profile_bio_placeholder">Conte um pouco sobre você...</string>
+    <string name="edit_profile_save">Salvar alterações</string>
+
+    <!-- Groups -->
+    <string name="groups_title">Seus Grupos</string>
+    <string name="groups_subtitle">Grupos privados de recomendações</string>
+    <string name="groups_empty">Nenhum grupo ainda</string>
+    <string name="groups_empty_subtitle">Crie ou entre em um grupo!</string>
+    <string name="groups_join_code">Entrar com código</string>
+    <string name="groups_create_dialog_title">Criar novo grupo</string>
+    <string name="groups_create_name">Nome do grupo</string>
+    <string name="groups_create_description">Descrição (opcional)</string>
+    <string name="groups_create_button">Criar</string>
+    <string name="groups_cancel">Cancelar</string>
+    <string name="groups_join_dialog_title">Entrar em um grupo</string>
+    <string name="groups_join_dialog_subtitle">Digite o código de convite do grupo:</string>
+    <string name="groups_join_code_hint">Código (ex: ABC123)</string>
+    <string name="groups_join_button">Entrar</string>
+
+    <!-- Group Detail -->
+    <string name="group_members">membros</string>
+    <string name="group_invite_code">Código de convite</string>
+    <string name="group_leave">Sair do grupo</string>
+    <string name="group_join">Entrar no grupo</string>
+    <string name="group_admin">Você é o admin deste grupo</string>
+    <string name="group_recommendations">Recomendações</string>
+    <string name="group_no_recommendations">Nenhuma recomendação ainda</string>
+    <string name="group_no_recommendations_subtitle">Seja o primeiro a recomendar um filme!</string>
+    <string name="group_code_copied">✅ Código copiado!</string>
+</resources>

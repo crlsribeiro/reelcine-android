@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -20,6 +21,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
+import com.carlosribeiro.reelcine.R
 import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @Composable
@@ -32,7 +34,6 @@ fun ProfileScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    // ✅ Recarrega do Firestore sempre que a tela volta ao foco
     LaunchedEffect(lifecycleOwner) {
         lifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
             viewModel.loadProfile()
@@ -67,7 +68,7 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = uiState.user?.name ?: "Usuário",
+            text = uiState.user?.name ?: stringResource(R.string.profile_default_name),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
@@ -77,7 +78,6 @@ fun ProfileScreen(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
 
-        // ✅ Bio exibida abaixo do email
         val bio = uiState.user?.bio.orEmpty()
         if (bio.isNotBlank()) {
             Spacer(modifier = Modifier.height(8.dp))
@@ -97,21 +97,21 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            StatCard(label = "Filmes", value = uiState.movieCount.toString())
-            StatCard(label = "Recomendações", value = uiState.reviewCount.toString())
-            StatCard(label = "Grupos", value = uiState.groupCount.toString())
+            StatCard(label = stringResource(R.string.profile_movies), value = uiState.movieCount.toString())
+            StatCard(label = stringResource(R.string.profile_recommendations), value = uiState.reviewCount.toString())
+            StatCard(label = stringResource(R.string.profile_groups), value = uiState.groupCount.toString())
         }
 
         Spacer(modifier = Modifier.height(32.dp))
 
         ProfileMenuItem(
             icon = { Icon(Icons.Default.Bookmarks, contentDescription = null, tint = Violet) },
-            title = "Minha Watchlist",
+            title = stringResource(R.string.profile_watchlist),
             onClick = onWatchlistClick
         )
         ProfileMenuItem(
             icon = { Icon(Icons.Default.Person, contentDescription = null, tint = Violet) },
-            title = "Editar Perfil",
+            title = stringResource(R.string.profile_edit),
             onClick = onEditProfileClick
         )
 
@@ -124,7 +124,7 @@ fun ProfileScreen(
         ) {
             Icon(Icons.Default.Logout, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text("Sair da conta")
+            Text(stringResource(R.string.profile_sign_out))
         }
     }
 }
@@ -132,17 +132,8 @@ fun ProfileScreen(
 @Composable
 fun StatCard(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = value,
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = Violet
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        Text(text = value, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold, color = Violet)
+        Text(text = label, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
@@ -154,17 +145,10 @@ fun ProfileMenuItem(icon: @Composable () -> Unit, title: String, onClick: () -> 
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
             icon()
             Spacer(modifier = Modifier.width(16.dp))
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.weight(1f)
-            )
+            Text(text = title, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
             Text(text = ">", color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }

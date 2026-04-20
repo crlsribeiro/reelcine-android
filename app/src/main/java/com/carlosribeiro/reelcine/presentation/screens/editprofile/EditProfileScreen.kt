@@ -11,10 +11,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.carlosribeiro.reelcine.R
 import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,10 +30,10 @@ fun EditProfileScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Editar Perfil", fontWeight = FontWeight.Bold) },
+                title = { Text(stringResource(R.string.edit_profile_title), fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.edit_profile_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
@@ -64,7 +66,7 @@ fun EditProfileScreen(
             OutlinedTextField(
                 value = uiState.name,
                 onValueChange = { viewModel.onNameChange(it) },
-                label = { Text("Nome") },
+                label = { Text(stringResource(R.string.edit_profile_name)) },
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 shape = RoundedCornerShape(12.dp),
@@ -88,7 +90,7 @@ fun EditProfileScreen(
 
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "O e-mail não pode ser alterado",
+                text = stringResource(R.string.edit_profile_email_hint),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.align(Alignment.Start)
@@ -99,12 +101,12 @@ fun EditProfileScreen(
             OutlinedTextField(
                 value = uiState.bio,
                 onValueChange = { viewModel.onBioChange(it) },
-                label = { Text("Bio") },
+                label = { Text(stringResource(R.string.edit_profile_bio)) },
                 modifier = Modifier.fillMaxWidth(),
                 maxLines = 3,
                 shape = RoundedCornerShape(12.dp),
                 colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Violet),
-                placeholder = { Text("Conte um pouco sobre você...") }
+                placeholder = { Text(stringResource(R.string.edit_profile_bio_placeholder)) }
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -119,7 +121,7 @@ fun EditProfileScreen(
                 if (uiState.isLoading) {
                     CircularProgressIndicator(modifier = Modifier.size(20.dp), color = Color.White, strokeWidth = 2.dp)
                 } else {
-                    Text("Salvar alterações", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(stringResource(R.string.edit_profile_save), color = Color.White, fontWeight = FontWeight.Bold)
                 }
             }
 

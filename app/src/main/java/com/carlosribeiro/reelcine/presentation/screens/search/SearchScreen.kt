@@ -18,6 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.carlosribeiro.reelcine.R
 import com.carlosribeiro.reelcine.domain.model.Movie
 import com.carlosribeiro.reelcine.presentation.theme.Gold
 import com.carlosribeiro.reelcine.presentation.theme.SurfaceDark
@@ -38,13 +40,13 @@ fun SearchScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
-        Text(text = "Buscar", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
+        Text(text = stringResource(R.string.search_title), style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.height(16.dp))
 
         OutlinedTextField(
             value = uiState.query,
             onValueChange = { viewModel.onQueryChange(it) },
-            placeholder = { Text("Buscar filmes...") },
+            placeholder = { Text(stringResource(R.string.search_hint)) },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Violet) },
             trailingIcon = {
                 if (uiState.query.isNotBlank()) {
@@ -75,8 +77,8 @@ fun SearchScreen(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("😕", fontSize = 48.sp)
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text("Nenhum filme encontrado", style = MaterialTheme.typography.titleMedium)
-                        Text("Tente buscar outro título", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(stringResource(R.string.search_empty), style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.search_empty_subtitle), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
@@ -97,8 +99,8 @@ fun SearchScreen(
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text("🎬", fontSize = 48.sp)
                         Spacer(modifier = Modifier.height(16.dp))
-                        Text("Busque seu filme favorito", style = MaterialTheme.typography.titleMedium)
-                        Text("Digite pelo menos 2 caracteres", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Text(stringResource(R.string.search_placeholder), style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.search_placeholder_subtitle), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     }
                 }
             }
