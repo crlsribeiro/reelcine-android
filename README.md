@@ -91,7 +91,7 @@ TMDB_API_KEY=your_api_key_here
 
 | Movies | Search | Profile |
 |--------|--------|---------|
-| ![Search](app/screenshots/09_Search.png) | ![Community](app/screenshots/11_Community.png) | ![Profile](app/screenshots/12_Profile.png) |
+| ![Movies](app/screenshots/13_HomeMovie.png) | ![Search](app/screenshots/09_Search.png) | ![Profile](app/screenshots/12_Profile.png) |
 
 ## 👨‍💻 Author
 

@@ -1,4 +1,4 @@
-package com.crlsribeiro.reelcine.presentation.screens.auth
+package com.carlosribeiro.reelcine.presentation.screens.auth
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -21,8 +21,8 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.crlsribeiro.reelcine.R
-import com.crlsribeiro.reelcine.presentation.theme.Violet
+import com.carlosribeiro.reelcine.R
+import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @Composable
 fun RegisterScreen(

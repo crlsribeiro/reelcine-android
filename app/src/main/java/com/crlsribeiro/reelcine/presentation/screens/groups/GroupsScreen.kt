@@ -1,4 +1,4 @@
-package com.crlsribeiro.reelcine.presentation.screens.groups
+package com.carlosribeiro.reelcine.presentation.screens.groups
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.crlsribeiro.reelcine.R
-import com.crlsribeiro.reelcine.domain.model.Group
-import com.crlsribeiro.reelcine.presentation.theme.Violet
+import com.carlosribeiro.reelcine.R
+import com.carlosribeiro.reelcine.domain.model.Group
+import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @Composable
 fun GroupsScreen(

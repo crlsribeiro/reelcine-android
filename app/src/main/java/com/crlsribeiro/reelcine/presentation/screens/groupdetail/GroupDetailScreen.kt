@@ -1,4 +1,4 @@
-package com.crlsribeiro.reelcine.presentation.screens.groupdetail
+package com.carlosribeiro.reelcine.presentation.screens.groupdetail
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
-import com.crlsribeiro.reelcine.R
-import com.crlsribeiro.reelcine.domain.model.Recommendation
-import com.crlsribeiro.reelcine.presentation.theme.Violet
+import com.carlosribeiro.reelcine.R
+import com.carlosribeiro.reelcine.domain.model.Recommendation
+import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.crlsribeiro.reelcine.presentation.navigation
+package com.carlosribeiro.reelcine.presentation.navigation
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Group
 import androidx.compose.material.icons.filled.Home
@@ -12,8 +12,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.crlsribeiro.reelcine.R
-import com.crlsribeiro.reelcine.presentation.theme.Violet
+import com.carlosribeiro.reelcine.R
+import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 data class BottomNavItem(val labelRes: Int, val icon: ImageVector, val route: String)
 

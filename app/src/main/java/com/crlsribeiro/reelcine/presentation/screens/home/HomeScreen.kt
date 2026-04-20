@@ -1,4 +1,4 @@
-package com.crlsribeiro.reelcine.presentation.screens.home
+package com.carlosribeiro.reelcine.presentation.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,11 +25,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.crlsribeiro.reelcine.R
-import com.crlsribeiro.reelcine.domain.model.Movie
-import com.crlsribeiro.reelcine.presentation.theme.Gold
-import com.crlsribeiro.reelcine.presentation.theme.SurfaceDark
-import com.crlsribeiro.reelcine.presentation.theme.Violet
+import com.carlosribeiro.reelcine.R
+import com.carlosribeiro.reelcine.domain.model.Movie
+import com.carlosribeiro.reelcine.presentation.theme.Gold
+import com.carlosribeiro.reelcine.presentation.theme.SurfaceDark
+import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 private val heroGradient = Brush.verticalGradient(
     colors = listOf(Color.Transparent, Color.Black.copy(alpha = 0.9f))

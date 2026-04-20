@@ -1,4 +1,4 @@
-package com.crlsribeiro.reelcine.presentation.screens.profile
+package com.carlosribeiro.reelcine.presentation.screens.profile
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -21,8 +21,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.crlsribeiro.reelcine.R
-import com.crlsribeiro.reelcine.presentation.theme.Violet
+import com.carlosribeiro.reelcine.R
+import com.carlosribeiro.reelcine.presentation.theme.Violet
 
 @Composable
 fun ProfileScreen(
