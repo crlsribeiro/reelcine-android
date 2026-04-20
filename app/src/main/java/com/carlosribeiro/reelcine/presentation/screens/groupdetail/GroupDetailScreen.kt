@@ -21,6 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
+import com.carlosribeiro.reelcine.R
 import com.carlosribeiro.reelcine.domain.model.Recommendation
 import com.carlosribeiro.reelcine.presentation.theme.Violet
 
@@ -45,10 +47,10 @@ fun GroupDetailScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(text = uiState.group?.name ?: "Grupo", fontWeight = FontWeight.Bold) },
+                title = { Text(text = uiState.group?.name ?: "Group", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.edit_profile_back))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
@@ -64,9 +66,9 @@ fun GroupDetailScreen(
             uiState.error != null -> {
                 Box(modifier = Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Text(text = uiState.error ?: "Erro", color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
+                        Text(text = uiState.error ?: "Error", color = MaterialTheme.colorScheme.error, textAlign = TextAlign.Center)
                         Spacer(modifier = Modifier.height(16.dp))
-                        TextButton(onClick = onNavigateBack) { Text("Voltar", color = Violet) }
+                        TextButton(onClick = onNavigateBack) { Text(stringResource(R.string.edit_profile_back), color = Violet) }
                     }
                 }
             }
@@ -87,7 +89,7 @@ fun GroupDetailScreen(
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Icon(Icons.Default.Person, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(14.dp))
                                         Spacer(modifier = Modifier.width(4.dp))
-                                        Text(text = "${group.memberCount} membros", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                        Text(text = "${group.memberCount} ${stringResource(R.string.group_members)}", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
                                 }
                             }
@@ -97,21 +99,12 @@ fun GroupDetailScreen(
                                 Text(text = group.description, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
 
-                            // Código de convite (visível para todos os membros)
                             if (group.inviteCode.isNotBlank()) {
                                 Spacer(modifier = Modifier.height(16.dp))
-                                Surface(
-                                    shape = RoundedCornerShape(12.dp),
-                                    color = Violet.copy(alpha = 0.1f),
-                                    modifier = Modifier.fillMaxWidth()
-                                ) {
-                                    Row(
-                                        modifier = Modifier.padding(12.dp),
-                                        verticalAlignment = Alignment.CenterVertically,
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
+                                Surface(shape = RoundedCornerShape(12.dp), color = Violet.copy(alpha = 0.1f), modifier = Modifier.fillMaxWidth()) {
+                                    Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                                         Column {
-                                            Text(text = "Código de convite", style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                            Text(text = stringResource(R.string.group_invite_code), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                             Text(text = group.inviteCode, style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = Violet, letterSpacing = 4.sp)
                                         }
                                         IconButton(onClick = {
@@ -119,7 +112,7 @@ fun GroupDetailScreen(
                                             clipboard.setPrimaryClip(ClipData.newPlainText("invite_code", group.inviteCode))
                                             showCopied = true
                                         }) {
-                                            Icon(Icons.Default.ContentCopy, contentDescription = "Copiar código", tint = Violet)
+                                            Icon(Icons.Default.ContentCopy, contentDescription = "Copy code", tint = Violet)
                                         }
                                     }
                                 }
@@ -128,7 +121,7 @@ fun GroupDetailScreen(
                                         kotlinx.coroutines.delay(2000)
                                         showCopied = false
                                     }
-                                    Text(text = "✅ Código copiado!", style = MaterialTheme.typography.bodySmall, color = Violet, modifier = Modifier.padding(top = 4.dp))
+                                    Text(text = stringResource(R.string.group_code_copied), style = MaterialTheme.typography.bodySmall, color = Violet, modifier = Modifier.padding(top = 4.dp))
                                 }
                             }
 
@@ -137,23 +130,23 @@ fun GroupDetailScreen(
                             if (!uiState.isAdmin) {
                                 if (uiState.isMember) {
                                     OutlinedButton(onClick = { viewModel.leaveGroup() }, modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)) {
-                                        Text("Sair do grupo")
+                                        Text(stringResource(R.string.group_leave))
                                     }
                                 } else {
                                     Button(onClick = { viewModel.joinGroup() }, modifier = Modifier.fillMaxWidth(), colors = ButtonDefaults.buttonColors(containerColor = Violet, contentColor = Color.White)) {
-                                        Text("Entrar no grupo", fontWeight = FontWeight.Bold)
+                                        Text(stringResource(R.string.group_join), fontWeight = FontWeight.Bold)
                                     }
                                 }
                             } else {
                                 Surface(shape = RoundedCornerShape(8.dp), color = Violet.copy(alpha = 0.15f), modifier = Modifier.fillMaxWidth()) {
-                                    Text(text = "Você é o admin deste grupo", modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall, color = Violet, textAlign = TextAlign.Center)
+                                    Text(text = stringResource(R.string.group_admin), modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.bodySmall, color = Violet, textAlign = TextAlign.Center)
                                 }
                             }
 
                             Spacer(modifier = Modifier.height(24.dp))
                             HorizontalDivider()
                             Spacer(modifier = Modifier.height(16.dp))
-                            Text(text = "Recomendações", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+                            Text(text = stringResource(R.string.group_recommendations), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
                         }
                     }
 
@@ -161,9 +154,9 @@ fun GroupDetailScreen(
                         item {
                             Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(text = "Nenhuma recomendação ainda", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text(text = stringResource(R.string.group_no_recommendations), style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     Spacer(modifier = Modifier.height(8.dp))
-                                    Text(text = "Seja o primeiro a recomendar um filme!", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
+                                    Text(text = stringResource(R.string.group_no_recommendations_subtitle), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
                                 }
                             }
                         }
@@ -201,7 +194,7 @@ fun RecommendationCard(recommendation: Recommendation, onClick: () -> Unit) {
                     Text(text = "\"${recommendation.comment}\"", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 3)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "por ${recommendation.userName}", style = MaterialTheme.typography.labelSmall, color = Violet, fontSize = 11.sp)
+                Text(text = "by ${recommendation.userName}", style = MaterialTheme.typography.labelSmall, color = Violet, fontSize = 11.sp)
             }
         }
     }

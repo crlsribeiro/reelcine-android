@@ -1,4 +1,90 @@
 <resources>
     <string name="app_name">ReelCine</string>
     <string name="default_web_client_id">327626030686-5tueooaafc50qoial9rudv667nh9m3fd.apps.googleusercontent.com</string>
+
+    <!-- Bottom Nav -->
+    <string name="nav_home">Home</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_groups">Groups</string>
+    <string name="nav_feed">Feed</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Login -->
+    <string name="login_tagline">DISCOVER. SHARE. CONNECT.</string>
+    <string name="login_google">Continue with Google</string>
+    <string name="login_password">Password</string>
+    <string name="login_forgot_password">Forgot your password?</string>
+    <string name="login_button">ENTER THE EXPERIENCE</string>
+    <string name="login_no_account">Not a member yet? </string>
+    <string name="login_create_account">Create your account</string>
+
+    <!-- Register -->
+    <string name="register_title">Create account</string>
+    <string name="register_subtitle">Join the ReelCine community</string>
+    <string name="register_name">Name</string>
+    <string name="register_already_have_account">Already have an account? </string>
+    <string name="register_sign_in">Sign in</string>
+    <string name="register_button">Create account</string>
+
+    <!-- Home -->
+    <string name="home_watch_trailer">Watch Trailer</string>
+    <string name="home_trending">🔥 Trending Today</string>
+    <string name="home_now_playing">🎭 Now Playing</string>
+    <string name="home_upcoming">🚀 Upcoming</string>
+    <string name="home_popular">⭐ Most Popular</string>
+    <string name="home_top_rated">🏆 Top Rated</string>
+    <string name="home_see_all">See all</string>
+
+    <!-- Search -->
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search movies...</string>
+    <string name="search_empty">No movies found</string>
+    <string name="search_empty_subtitle">Try searching for another title</string>
+    <string name="search_placeholder">Search your favorite movie</string>
+    <string name="search_placeholder_subtitle">Type at least 2 characters</string>
+
+    <!-- Profile -->
+    <string name="profile_default_name">User</string>
+    <string name="profile_movies">Movies</string>
+    <string name="profile_recommendations">Recommendations</string>
+    <string name="profile_groups">Groups</string>
+    <string name="profile_watchlist">My Watchlist</string>
+    <string name="profile_edit">Edit Profile</string>
+    <string name="profile_sign_out">Sign out</string>
+
+    <!-- Edit Profile -->
+    <string name="edit_profile_title">Edit Profile</string>
+    <string name="edit_profile_back">Back</string>
+    <string name="edit_profile_name">Name</string>
+    <string name="edit_profile_email_hint">Email cannot be changed</string>
+    <string name="edit_profile_bio">Bio</string>
+    <string name="edit_profile_bio_placeholder">Tell us a little about yourself...</string>
+    <string name="edit_profile_save">Save changes</string>
+
+    <!-- Groups -->
+    <string name="groups_title">Your Groups</string>
+    <string name="groups_subtitle">Private recommendation groups</string>
+    <string name="groups_empty">No groups yet</string>
+    <string name="groups_empty_subtitle">Create or join a group!</string>
+    <string name="groups_join_code">Join with code</string>
+    <string name="groups_create_dialog_title">Create new group</string>
+    <string name="groups_create_name">Group name</string>
+    <string name="groups_create_description">Description (optional)</string>
+    <string name="groups_create_button">Create</string>
+    <string name="groups_cancel">Cancel</string>
+    <string name="groups_join_dialog_title">Join a group</string>
+    <string name="groups_join_dialog_subtitle">Enter the group invite code:</string>
+    <string name="groups_join_code_hint">Code (e.g. ABC123)</string>
+    <string name="groups_join_button">Join</string>
+
+    <!-- Group Detail -->
+    <string name="group_members">members</string>
+    <string name="group_invite_code">Invite code</string>
+    <string name="group_leave">Leave group</string>
+    <string name="group_join">Join group</string>
+    <string name="group_admin">You are the admin of this group</string>
+    <string name="group_recommendations">Recommendations</string>
+    <string name="group_no_recommendations">No recommendations yet</string>
+    <string name="group_no_recommendations_subtitle">Be the first to recommend a movie!</string>
+    <string name="group_code_copied">✅ Code copied!</string>
 </resources>
