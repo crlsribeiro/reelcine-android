@@ -15,11 +15,11 @@ val localProperties = Properties().apply {
 }
 
 android {
-    namespace = "com.carlosribeiro.reelcine"
+    namespace = "com.crlsribeiro.reelcine"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.carlosribeiro.reelcine"
+        applicationId = "com.crlsribeiro.reelcine"
         minSdk = 26
         targetSdk = 36
         versionCode = 1
