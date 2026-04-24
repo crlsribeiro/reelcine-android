@@ -1,4 +1,4 @@
-package com.carlosribeiro.reelcine
+package com.crlsribeiro.reelcine
 
 import org.junit.Test
 

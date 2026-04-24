@@ -1,9 +1,9 @@
-package com.carlosribeiro.reelcine.presentation.viewmodel
+package com.crlsribeiro.reelcine.presentation.viewmodel
 
-import com.carlosribeiro.reelcine.domain.model.User
-import com.carlosribeiro.reelcine.domain.usecase.auth.SignInWithEmailUseCase
-import com.carlosribeiro.reelcine.domain.usecase.auth.SignInWithGoogleUseCase
-import com.carlosribeiro.reelcine.presentation.screens.auth.LoginViewModel
+import com.crlsribeiro.reelcine.domain.model.User
+import com.crlsribeiro.reelcine.domain.usecase.auth.SignInWithEmailUseCase
+import com.crlsribeiro.reelcine.domain.usecase.auth.SignInWithGoogleUseCase
+import com.crlsribeiro.reelcine.presentation.screens.auth.LoginViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
