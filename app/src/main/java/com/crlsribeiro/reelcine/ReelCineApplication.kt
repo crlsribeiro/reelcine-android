@@ -11,6 +11,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.appcheck.AppCheckProviderFactory
 import com.google.firebase.appcheck.FirebaseAppCheck
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.Dispatchers
+import okhttp3.Dispatcher
+import okhttp3.OkHttpClient
 
 @HiltAndroidApp
 class ReelCineApplication : Application() {
@@ -21,23 +24,34 @@ class ReelCineApplication : Application() {
     }
 
     private fun initCoil() {
+        val okHttpClient = OkHttpClient.Builder()
+            .dispatcher(Dispatcher().apply {
+                maxRequests = 4
+                maxRequestsPerHost = 2
+            })
+            .build()
+
         val imageLoader = ImageLoader.Builder(this)
+            .okHttpClient(okHttpClient)
             .memoryCache {
                 MemoryCache.Builder(this)
-                    .maxSizePercent(0.25)
+                    .maxSizePercent(0.15)
                     .build()
             }
             .diskCache {
                 DiskCache.Builder()
                     .directory(cacheDir.resolve("image_cache"))
-                    .maxSizePercent(0.02)
+                    .maxSizeBytes(150L * 1024 * 1024)
                     .build()
             }
             .memoryCachePolicy(CachePolicy.ENABLED)
             .diskCachePolicy(CachePolicy.ENABLED)
             .networkCachePolicy(CachePolicy.ENABLED)
-            .crossfade(true)
+            .crossfade(false)
+            .fetcherDispatcher(Dispatchers.IO.limitedParallelism(2))
+            .decoderDispatcher(Dispatchers.IO.limitedParallelism(2))
             .build()
+
         Coil.setImageLoader(imageLoader)
     }
 

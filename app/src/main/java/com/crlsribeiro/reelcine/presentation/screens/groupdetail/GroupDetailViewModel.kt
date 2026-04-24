@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.crlsribeiro.reelcine.domain.model.Group
 import com.crlsribeiro.reelcine.domain.model.Recommendation
 import com.crlsribeiro.reelcine.domain.usecase.auth.GetCurrentUserUseCase
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,6 +34,8 @@ class GroupDetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val groupId: String = savedStateHandle["groupId"] ?: ""
+    private val groupsCollection get() = firestore.collection("groups")
+
     private val _uiState = MutableStateFlow(GroupDetailUiState())
     val uiState: StateFlow<GroupDetailUiState> = _uiState.asStateFlow()
 
@@ -48,17 +51,17 @@ class GroupDetailViewModel @Inject constructor(
         }
         viewModelScope.launch {
             try {
-                val userId = getCurrentUserUseCase()?.uid ?: ""
-                val doc = firestore.collection("groups").document(groupId).get().await()
-                val members = doc.get("members") as? List<String> ?: emptyList()
+                val userId = getCurrentUserUseCase()?.uid.orEmpty()
+                val doc = groupsCollection.document(groupId).get().await()
+                val members = doc.getStringList("members") // ✅ sem unchecked cast
                 val group = Group(
                     id = groupId,
-                    name = doc.getString("name") ?: "",
-                    description = doc.getString("description") ?: "",
-                    adminId = doc.getString("adminId") ?: "",
+                    name = doc.getString("name").orEmpty(),
+                    description = doc.getString("description").orEmpty(),
+                    adminId = doc.getString("adminId").orEmpty(),
                     members = members,
                     memberCount = members.size,
-                    inviteCode = doc.getString("inviteCode") ?: ""
+                    inviteCode = doc.getString("inviteCode").orEmpty()
                 )
                 _uiState.value = _uiState.value.copy(
                     isLoading = false,
@@ -83,21 +86,21 @@ class GroupDetailViewModel @Inject constructor(
                     return@addSnapshotListener
                 }
                 val recommendations = snapshot?.documents?.mapNotNull { doc ->
-                    try {
+                    runCatching {
                         Recommendation(
                             id = doc.id,
                             movieId = (doc.getLong("movieId") ?: 0L).toInt(),
-                            movieTitle = doc.getString("movieTitle") ?: "",
-                            posterPath = doc.getString("posterPath") ?: "",
-                            backdropPath = doc.getString("backdropPath") ?: "",
-                            comment = doc.getString("comment") ?: "",
+                            movieTitle = doc.getString("movieTitle").orEmpty(),
+                            posterPath = doc.getString("posterPath").orEmpty(),
+                            backdropPath = doc.getString("backdropPath").orEmpty(),
+                            comment = doc.getString("comment").orEmpty(),
                             rating = (doc.getDouble("rating") ?: 0.0).toFloat(),
-                            userId = doc.getString("userId") ?: "",
-                            userName = doc.getString("userName") ?: "",
+                            userId = doc.getString("userId").orEmpty(),
+                            userName = doc.getString("userName").orEmpty(),
                             groupId = groupId,
                             timestamp = doc.getLong("timestamp") ?: 0L
                         )
-                    } catch (e: Exception) { null }
+                    }.getOrNull()
                 } ?: emptyList()
                 _uiState.value = _uiState.value.copy(recommendations = recommendations)
             }
@@ -106,12 +109,12 @@ class GroupDetailViewModel @Inject constructor(
     fun joinGroup() {
         val userId = getCurrentUserUseCase()?.uid ?: return
         viewModelScope.launch {
-            try {
-                firestore.collection("groups").document(groupId)
-                    .update("members", com.google.firebase.firestore.FieldValue.arrayUnion(userId))
+            runCatching {
+                groupsCollection.document(groupId)
+                    .update("members", FieldValue.arrayUnion(userId))
                     .await()
                 loadGroupDetail()
-            } catch (e: Exception) {
+            }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(error = e.message)
             }
         }
@@ -120,14 +123,21 @@ class GroupDetailViewModel @Inject constructor(
     fun leaveGroup() {
         val userId = getCurrentUserUseCase()?.uid ?: return
         viewModelScope.launch {
-            try {
-                firestore.collection("groups").document(groupId)
-                    .update("members", com.google.firebase.firestore.FieldValue.arrayRemove(userId))
+            runCatching {
+                groupsCollection.document(groupId)
+                    .update("members", FieldValue.arrayRemove(userId))
                     .await()
                 loadGroupDetail()
-            } catch (e: Exception) {
+            }.onFailure { e ->
                 _uiState.value = _uiState.value.copy(error = e.message)
             }
         }
     }
+
+    // ─── Helper ──────────────────────────────────────────────────────────────
+
+    @Suppress("UNCHECKED_CAST")
+    private fun com.google.firebase.firestore.DocumentSnapshot.getStringList(
+        field: String
+    ): List<String> = get(field) as? List<String> ?: emptyList()
 }

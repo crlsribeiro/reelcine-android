@@ -2,6 +2,7 @@ package com.crlsribeiro.reelcine.data.repository
 
 import com.crlsribeiro.reelcine.domain.model.Recommendation
 import com.crlsribeiro.reelcine.domain.repository.RecommendationRepository
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.channels.awaitClose
@@ -14,8 +15,10 @@ class RecommendationRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : RecommendationRepository {
 
+    private val recommendationsCollection get() = firestore.collection("recommendations")
+
     override fun getFeedRecommendations(): Flow<List<Recommendation>> = callbackFlow {
-        val listener = firestore.collection("recommendations")
+        val listener = recommendationsCollection
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .limit(50)
             .addSnapshotListener { snapshot, error ->
@@ -29,7 +32,7 @@ class RecommendationRepositoryImpl @Inject constructor(
     }
 
     override fun getGroupRecommendations(groupId: String): Flow<List<Recommendation>> = callbackFlow {
-        val listener = firestore.collection("recommendations")
+        val listener = recommendationsCollection
             .whereEqualTo("groupId", groupId)
             .orderBy("timestamp", Query.Direction.DESCENDING)
             .addSnapshotListener { snapshot, error ->
@@ -42,60 +45,53 @@ class RecommendationRepositoryImpl @Inject constructor(
         awaitClose { listener.remove() }
     }
 
-    override suspend fun addRecommendation(recommendation: Recommendation): Result<Unit> {
-        return try {
-            val data = hashMapOf(
-                "movieId" to recommendation.movieId,
-                "movieTitle" to recommendation.movieTitle,
-                "posterPath" to recommendation.posterPath,
-                "backdropPath" to recommendation.backdropPath,
-                "comment" to recommendation.comment,
-                "rating" to recommendation.rating,
-                "userId" to recommendation.userId,
-                "userName" to recommendation.userName,
-                "userAvatar" to recommendation.userAvatar,
-                "groupId" to recommendation.groupId,
-                "timestamp" to System.currentTimeMillis(),
-                "likes" to emptyList<String>(),
-                "likesCount" to 0
-            )
-            firestore.collection("recommendations").add(data).await()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override suspend fun addRecommendation(recommendation: Recommendation): Result<Unit> = runCatching {
+        val data = mapOf(
+            "movieId" to recommendation.movieId,
+            "movieTitle" to recommendation.movieTitle,
+            "posterPath" to recommendation.posterPath,
+            "backdropPath" to recommendation.backdropPath,
+            "comment" to recommendation.comment,
+            "rating" to recommendation.rating,
+            "userId" to recommendation.userId,
+            "userName" to recommendation.userName,
+            "userAvatar" to recommendation.userAvatar,
+            "groupId" to recommendation.groupId,
+            "timestamp" to FieldValue.serverTimestamp(), // ✅ server timestamp
+            "likes" to emptyList<String>(),
+            "likesCount" to 0
+        )
+        recommendationsCollection.add(data).await()
     }
 
-    override suspend fun likeRecommendation(recommendationId: String, userId: String): Result<Unit> {
-        return try {
-            val ref = firestore.collection("recommendations").document(recommendationId)
-            firestore.runTransaction { transaction ->
-                val snapshot = transaction.get(ref)
-                val likes = snapshot.get("likes") as? List<String> ?: emptyList()
-                if (!likes.contains(userId)) {
-                    transaction.update(ref, "likes", likes + userId)
-                    transaction.update(ref, "likesCount", likes.size + 1)
-                }
-            }.await()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override suspend fun likeRecommendation(
+        recommendationId: String,
+        userId: String
+    ): Result<Unit> = runCatching {
+        recommendationsCollection.document(recommendationId)
+            .update(
+                "likes", FieldValue.arrayUnion(userId), // ✅ atômico, sem unchecked cast
+                "likesCount", FieldValue.increment(1)
+            ).await()
     }
 
-    override suspend fun unlikeRecommendation(recommendationId: String, userId: String): Result<Unit> {
-        return try {
-            val ref = firestore.collection("recommendations").document(recommendationId)
-            firestore.runTransaction { transaction ->
-                val snapshot = transaction.get(ref)
-                val likes = snapshot.get("likes") as? List<String> ?: emptyList()
-                val newLikes = likes.filter { it != userId }
-                transaction.update(ref, "likes", newLikes)
-                transaction.update(ref, "likesCount", newLikes.size)
-            }.await()
-            Result.success(Unit)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    override suspend fun unlikeRecommendation(
+        recommendationId: String,
+        userId: String
+    ): Result<Unit> = runCatching {
+        val ref = recommendationsCollection.document(recommendationId)
+        firestore.runTransaction { transaction ->
+            val snapshot = transaction.get(ref)
+            val newLikes = snapshot.getStringList("likes").filter { it != userId }
+            transaction.update(ref, "likes", newLikes)
+            transaction.update(ref, "likesCount", newLikes.size)
+        }.await()
     }
+
+    // ─── Helper ──────────────────────────────────────────────────────────────
+
+    @Suppress("UNCHECKED_CAST")
+    private fun com.google.firebase.firestore.DocumentSnapshot.getStringList(
+        field: String
+    ): List<String> = get(field) as? List<String> ?: emptyList()
 }
