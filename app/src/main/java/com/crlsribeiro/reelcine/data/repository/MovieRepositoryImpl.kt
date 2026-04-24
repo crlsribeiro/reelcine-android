@@ -4,8 +4,6 @@ import com.crlsribeiro.reelcine.data.remote.api.TmdbApi
 import com.crlsribeiro.reelcine.domain.model.Movie
 import com.crlsribeiro.reelcine.domain.model.Video
 import com.crlsribeiro.reelcine.domain.repository.MovieRepository
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 class MovieRepositoryImpl @Inject constructor(
@@ -59,7 +57,7 @@ class MovieRepositoryImpl @Inject constructor(
         releaseDate = releaseDate ?: "",
         voteAverage = voteAverage,
         voteCount = voteCount,
-        genres = genres?.map { it.name }?.toImmutableList() ?: persistentListOf(),
+        genres = genres?.map { it.name } ?: emptyList(),
         runtime = runtime ?: 0
     )
 }

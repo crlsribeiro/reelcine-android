@@ -1,10 +1,5 @@
 package com.crlsribeiro.reelcine.domain.model
 
-import androidx.compose.runtime.Immutable
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-
-@Immutable
 data class Movie(
     val id: Int,
     val title: String,
@@ -14,6 +9,6 @@ data class Movie(
     val releaseDate: String,
     val voteAverage: Double,
     val voteCount: Int,
-    val genres: ImmutableList<String> = persistentListOf(),
+    val genres: List<String> = emptyList(),
     val runtime: Int = 0
 )
