@@ -3,7 +3,7 @@ package com.crlsribeiro.reelcine.presentation.screens.auth
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
 import androidx.compose.ui.graphics.Color
@@ -33,7 +33,8 @@ fun ForgotPasswordScreen(
                 title = { Text("Recuperar senha") },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
+
                     }
                 }
             )
