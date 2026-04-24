@@ -39,7 +39,7 @@ class ProfileViewModel @Inject constructor(
 
     fun loadProfile() {
         viewModelScope.launch {
-            _uiState.value = ProfileUiState(isLoading = true)
+            _uiState.value = _uiState.value.copy(isLoading = true)
             val authUser = getCurrentUserUseCase() ?: run {
                 _uiState.value = ProfileUiState()
                 return@launch

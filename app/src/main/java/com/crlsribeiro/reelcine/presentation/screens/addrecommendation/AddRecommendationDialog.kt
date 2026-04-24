@@ -91,7 +91,7 @@ fun AddRecommendationDialog(
                             readOnly = true,
                             label = { Text("Grupo") },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                            modifier = Modifier.fillMaxWidth().menuAnchor(),
+                            modifier = Modifier.fillMaxWidth().menuAnchor(MenuAnchorType.PrimaryNotEditable),
                             colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Violet)
                         )
                         ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {

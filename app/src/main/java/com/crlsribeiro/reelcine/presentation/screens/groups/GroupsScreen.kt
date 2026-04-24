@@ -1,4 +1,4 @@
-package com.carlosribeiro.reelcine.presentation.screens.groups
+package com.crlsribeiro.reelcine.presentation.screens.groups
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.carlosribeiro.reelcine.R
-import com.carlosribeiro.reelcine.domain.model.Group
-import com.carlosribeiro.reelcine.presentation.theme.Violet
+import com.crlsribeiro.reelcine.R
+import com.crlsribeiro.reelcine.domain.model.Group
+import com.crlsribeiro.reelcine.presentation.theme.Violet
 
 @Composable
 fun GroupsScreen(
@@ -186,11 +186,15 @@ fun JoinGroupDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
         title = { Text(stringResource(R.string.groups_join_dialog_title)) },
         text = {
             Column {
-                Text(text = stringResource(R.string.groups_join_dialog_subtitle), style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    text = stringResource(R.string.groups_join_dialog_subtitle),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedTextField(
                     value = code,
-                    onValueChange = { code = it.uppercase().take(6) },
+                    onValueChange = { code = it.uppercase().take(20) },
                     label = { Text(stringResource(R.string.groups_join_code_hint)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
@@ -201,8 +205,11 @@ fun JoinGroupDialog(onDismiss: () -> Unit, onConfirm: (String) -> Unit) {
         confirmButton = {
             Button(
                 onClick = { onConfirm(code) },
-                enabled = code.length == 6,
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6D28D9), contentColor = Color.White)
+                enabled = code.isNotBlank(),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF6D28D9),
+                    contentColor = Color.White
+                )
             ) {
                 Text(stringResource(R.string.groups_join_button), color = Color.White, fontWeight = FontWeight.Bold)
             }

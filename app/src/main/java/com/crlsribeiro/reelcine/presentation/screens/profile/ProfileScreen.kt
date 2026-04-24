@@ -1,10 +1,10 @@
-package com.carlosribeiro.reelcine.presentation.screens.profile
+package com.crlsribeiro.reelcine.presentation.screens.profile
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Bookmarks
 import androidx.compose.material3.*
@@ -21,8 +21,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
-import com.carlosribeiro.reelcine.R
-import com.carlosribeiro.reelcine.presentation.theme.Violet
+import com.crlsribeiro.reelcine.R
+import com.crlsribeiro.reelcine.presentation.theme.Violet
 
 @Composable
 fun ProfileScreen(
@@ -122,7 +122,7 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxWidth().height(52.dp),
             colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
         ) {
-            Icon(Icons.Default.Logout, contentDescription = null)
+            Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
             Text(stringResource(R.string.profile_sign_out))
         }
