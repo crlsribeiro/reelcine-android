@@ -1,8 +1,8 @@
-package com.carlosribeiro.reelcine.domain.usecase
+package com.crlsribeiro.reelcine.domain.usecase
 
-import com.carlosribeiro.reelcine.domain.model.Movie
-import com.carlosribeiro.reelcine.domain.repository.MovieRepository
-import com.carlosribeiro.reelcine.domain.usecase.movie.SearchMoviesUseCase
+import com.crlsribeiro.reelcine.domain.model.Movie
+import com.crlsribeiro.reelcine.domain.repository.MovieRepository
+import com.crlsribeiro.reelcine.domain.usecase.movie.SearchMoviesUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

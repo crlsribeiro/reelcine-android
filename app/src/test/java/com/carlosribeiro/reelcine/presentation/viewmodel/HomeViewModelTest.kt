@@ -1,13 +1,13 @@
-package com.carlosribeiro.reelcine.presentation.viewmodel
+package com.crlsribeiro.reelcine.presentation.viewmodel
 
-import com.carlosribeiro.reelcine.domain.model.Movie
-import com.carlosribeiro.reelcine.domain.usecase.movie.GetNowPlayingMoviesUseCase
-import com.carlosribeiro.reelcine.domain.usecase.movie.GetPopularMoviesUseCase
-import com.carlosribeiro.reelcine.domain.usecase.movie.GetTopRatedMoviesUseCase
-import com.carlosribeiro.reelcine.domain.usecase.movie.GetTrendingMoviesUseCase
-import com.carlosribeiro.reelcine.domain.usecase.movie.GetTrendingTodayMoviesUseCase
-import com.carlosribeiro.reelcine.domain.usecase.movie.GetUpcomingMoviesUseCase
-import com.carlosribeiro.reelcine.presentation.screens.home.HomeViewModel
+import com.crlsribeiro.reelcine.domain.model.Movie
+import com.crlsribeiro.reelcine.domain.usecase.movie.GetNowPlayingMoviesUseCase
+import com.crlsribeiro.reelcine.domain.usecase.movie.GetPopularMoviesUseCase
+import com.crlsribeiro.reelcine.domain.usecase.movie.GetTopRatedMoviesUseCase
+import com.crlsribeiro.reelcine.domain.usecase.movie.GetTrendingMoviesUseCase
+import com.crlsribeiro.reelcine.domain.usecase.movie.GetTrendingTodayMoviesUseCase
+import com.crlsribeiro.reelcine.domain.usecase.movie.GetUpcomingMoviesUseCase
+import com.crlsribeiro.reelcine.presentation.screens.home.HomeViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

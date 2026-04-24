@@ -1,10 +1,10 @@
-package com.carlosribeiro.reelcine.domain.usecase
+package com.crlsribeiro.reelcine.domain.usecase
 
-import com.carlosribeiro.reelcine.domain.model.WatchlistItem
-import com.carlosribeiro.reelcine.domain.repository.WatchlistRepository
-import com.carlosribeiro.reelcine.domain.usecase.watchlist.AddToWatchlistUseCase
-import com.carlosribeiro.reelcine.domain.usecase.watchlist.IsInWatchlistUseCase
-import com.carlosribeiro.reelcine.domain.usecase.watchlist.RemoveFromWatchlistUseCase
+import com.crlsribeiro.reelcine.domain.model.WatchlistItem
+import com.crlsribeiro.reelcine.domain.repository.WatchlistRepository
+import com.crlsribeiro.reelcine.domain.usecase.watchlist.AddToWatchlistUseCase
+import com.crlsribeiro.reelcine.domain.usecase.watchlist.IsInWatchlistUseCase
+import com.crlsribeiro.reelcine.domain.usecase.watchlist.RemoveFromWatchlistUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

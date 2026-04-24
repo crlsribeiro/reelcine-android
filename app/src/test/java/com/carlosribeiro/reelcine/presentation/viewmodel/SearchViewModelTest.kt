@@ -1,9 +1,9 @@
-package com.carlosribeiro.reelcine.presentation.viewmodel
+package com.crlsribeiro.reelcine.presentation.viewmodel
 
 import app.cash.turbine.test
-import com.carlosribeiro.reelcine.domain.model.Movie
-import com.carlosribeiro.reelcine.domain.usecase.movie.SearchMoviesUseCase
-import com.carlosribeiro.reelcine.presentation.screens.search.SearchViewModel
+import com.crlsribeiro.reelcine.domain.model.Movie
+import com.crlsribeiro.reelcine.domain.usecase.movie.SearchMoviesUseCase
+import com.crlsribeiro.reelcine.presentation.screens.search.SearchViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

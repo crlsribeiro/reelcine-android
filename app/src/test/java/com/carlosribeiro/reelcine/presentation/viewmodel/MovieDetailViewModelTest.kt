@@ -1,14 +1,14 @@
-package com.carlosribeiro.reelcine.presentation.viewmodel
+package com.crlsribeiro.reelcine.presentation.viewmodel
 
 import androidx.lifecycle.SavedStateHandle
-import com.carlosribeiro.reelcine.domain.model.Movie
-import com.carlosribeiro.reelcine.domain.usecase.auth.GetCurrentUserUseCase
-import com.carlosribeiro.reelcine.domain.usecase.movie.GetMovieDetailUseCase
-import com.carlosribeiro.reelcine.domain.usecase.movie.GetMovieVideosUseCase
-import com.carlosribeiro.reelcine.domain.usecase.watchlist.AddToWatchlistUseCase
-import com.carlosribeiro.reelcine.domain.usecase.watchlist.IsInWatchlistUseCase
-import com.carlosribeiro.reelcine.domain.usecase.watchlist.RemoveFromWatchlistUseCase
-import com.carlosribeiro.reelcine.presentation.screens.moviedetail.MovieDetailViewModel
+import com.crlsribeiro.reelcine.domain.model.Movie
+import com.crlsribeiro.reelcine.domain.usecase.auth.GetCurrentUserUseCase
+import com.crlsribeiro.reelcine.domain.usecase.movie.GetMovieDetailUseCase
+import com.crlsribeiro.reelcine.domain.usecase.movie.GetMovieVideosUseCase
+import com.crlsribeiro.reelcine.domain.usecase.watchlist.AddToWatchlistUseCase
+import com.crlsribeiro.reelcine.domain.usecase.watchlist.IsInWatchlistUseCase
+import com.crlsribeiro.reelcine.domain.usecase.watchlist.RemoveFromWatchlistUseCase
+import com.crlsribeiro.reelcine.presentation.screens.moviedetail.MovieDetailViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
