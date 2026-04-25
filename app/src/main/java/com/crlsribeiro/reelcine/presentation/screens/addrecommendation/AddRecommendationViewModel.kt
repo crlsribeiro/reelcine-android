@@ -7,6 +7,7 @@ import com.crlsribeiro.reelcine.domain.model.Recommendation
 import com.crlsribeiro.reelcine.domain.usecase.auth.GetCurrentUserUseCase
 import com.crlsribeiro.reelcine.domain.usecase.group.GetUserGroupsUseCase
 import com.crlsribeiro.reelcine.domain.usecase.recommendation.AddRecommendationUseCase
+import com.google.firebase.Timestamp // Importe necessário adicionado aqui
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -66,7 +67,8 @@ class AddRecommendationViewModel @Inject constructor(
                 userId = user.uid,
                 userName = user.name,
                 groupId = groupId,
-                timestamp = System.currentTimeMillis()
+                // AJUSTE: Trocado de System.currentTimeMillis() para Timestamp.now()
+                timestamp = Timestamp.now()
             )
             addRecommendationUseCase(recommendation)
                 .onSuccess { _uiState.value = _uiState.value.copy(isLoading = false, isSuccess = true) }

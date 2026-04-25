@@ -1,5 +1,8 @@
 package com.crlsribeiro.reelcine.domain.model
 
+// Certifique-se de que o import seja EXATAMENTE este:
+import com.google.firebase.Timestamp
+
 data class Recommendation(
     val id: String = "",
     val movieId: Int = 0,
@@ -12,7 +15,8 @@ data class Recommendation(
     val userName: String = "",
     val userAvatar: String = "",
     val groupId: String = "",
-    val timestamp: Long = 0L,
+    // Mude para Timestamp e inicialize com o valor atual por padrão
+    val timestamp: Timestamp = Timestamp.now(),
     val likes: List<String> = emptyList(),
     val likesCount: Int = 0
 )

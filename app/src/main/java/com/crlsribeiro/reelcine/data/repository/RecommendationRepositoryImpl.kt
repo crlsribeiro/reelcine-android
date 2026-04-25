@@ -2,6 +2,7 @@ package com.crlsribeiro.reelcine.data.repository
 
 import com.crlsribeiro.reelcine.domain.model.Recommendation
 import com.crlsribeiro.reelcine.domain.repository.RecommendationRepository
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
+import java.util.Date
 
 class RecommendationRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore
@@ -24,7 +26,9 @@ class RecommendationRepositoryImpl @Inject constructor(
             .addSnapshotListener { snapshot, error ->
                 if (error != null) { close(error); return@addSnapshotListener }
                 val recommendations = snapshot?.documents?.mapNotNull { doc ->
-                    doc.toObject(Recommendation::class.java)?.copy(id = doc.id)
+                    val timestamp = doc.safeTimestamp()
+                    doc.toObject(Recommendation::class.java)
+                        ?.copy(id = doc.id, timestamp = timestamp)
                 } ?: emptyList()
                 trySend(recommendations)
             }
@@ -38,7 +42,9 @@ class RecommendationRepositoryImpl @Inject constructor(
             .addSnapshotListener { snapshot, error ->
                 if (error != null) { close(error); return@addSnapshotListener }
                 val recommendations = snapshot?.documents?.mapNotNull { doc ->
-                    doc.toObject(Recommendation::class.java)?.copy(id = doc.id)
+                    val timestamp = doc.safeTimestamp()
+                    doc.toObject(Recommendation::class.java)
+                        ?.copy(id = doc.id, timestamp = timestamp)
                 } ?: emptyList()
                 trySend(recommendations)
             }
@@ -57,7 +63,7 @@ class RecommendationRepositoryImpl @Inject constructor(
             "userName" to recommendation.userName,
             "userAvatar" to recommendation.userAvatar,
             "groupId" to recommendation.groupId,
-            "timestamp" to FieldValue.serverTimestamp(),
+            "timestamp" to Timestamp.now(),
             "likes" to emptyList<String>(),
             "likesCount" to 0
         )
@@ -68,11 +74,17 @@ class RecommendationRepositoryImpl @Inject constructor(
         recommendationId: String,
         userId: String
     ): Result<Unit> = runCatching {
-        recommendationsCollection.document(recommendationId)
-            .update(
-                "likes", FieldValue.arrayUnion(userId),
-                "likesCount", FieldValue.increment(1)
-            ).await()
+        val ref = recommendationsCollection.document(recommendationId)
+        firestore.runTransaction { transaction ->
+            val snapshot = transaction.get(ref)
+            val likes = snapshot.getStringList("likes")
+
+            // Só incrementa se o usuário ainda NÃO curtiu
+            if (!likes.contains(userId)) {
+                transaction.update(ref, "likes", FieldValue.arrayUnion(userId))
+                transaction.update(ref, "likesCount", FieldValue.increment(1))
+            }
+        }.await()
     }
 
     override suspend fun unlikeRecommendation(
@@ -81,10 +93,24 @@ class RecommendationRepositoryImpl @Inject constructor(
     ): Result<Unit> = runCatching {
         val ref = recommendationsCollection.document(recommendationId)
         firestore.runTransaction { transaction ->
-            val newLikes = transaction.get(ref).getStringList("likes").filter { it != userId }
-            transaction.update(ref, "likes", newLikes)
-            transaction.update(ref, "likesCount", newLikes.size)
+            val snapshot = transaction.get(ref)
+            val likes = snapshot.getStringList("likes")
+
+            // Só decrementa se o usuário JÁ curtiu
+            if (likes.contains(userId)) {
+                transaction.update(ref, "likes", FieldValue.arrayRemove(userId))
+                transaction.update(ref, "likesCount", FieldValue.increment(-1))
+            }
         }.await()
+    }
+
+    private fun com.google.firebase.firestore.DocumentSnapshot.safeTimestamp(): Timestamp {
+        return when (val raw = get("timestamp")) {
+            is Timestamp -> raw
+            is Long -> Timestamp(Date(raw))
+            is Double -> Timestamp(Date(raw.toLong()))
+            else -> Timestamp.now()
+        }
     }
 
     @Suppress("UNCHECKED_CAST")
