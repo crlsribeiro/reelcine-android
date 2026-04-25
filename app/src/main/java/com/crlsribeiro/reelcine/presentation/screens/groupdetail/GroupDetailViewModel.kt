@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.crlsribeiro.reelcine.domain.model.Group
 import com.crlsribeiro.reelcine.domain.model.Recommendation
 import com.crlsribeiro.reelcine.domain.usecase.auth.GetCurrentUserUseCase
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -15,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.util.Date
 import javax.inject.Inject
 
 data class GroupDetailUiState(
@@ -87,6 +89,13 @@ class GroupDetailViewModel @Inject constructor(
                 }
                 val recommendations = snapshot?.documents?.mapNotNull { doc ->
                     runCatching {
+                        // Lógica para extrair o timestamp com segurança
+                        val timestamp = when (val raw = doc.get("timestamp")) {
+                            is Timestamp -> raw
+                            is Long -> Timestamp(Date(raw))
+                            else -> Timestamp.now()
+                        }
+
                         Recommendation(
                             id = doc.id,
                             movieId = (doc.getLong("movieId") ?: 0L).toInt(),
@@ -98,7 +107,7 @@ class GroupDetailViewModel @Inject constructor(
                             userId = doc.getString("userId").orEmpty(),
                             userName = doc.getString("userName").orEmpty(),
                             groupId = groupId,
-                            timestamp = doc.getLong("timestamp") ?: 0L
+                            timestamp = timestamp // Agora usando o objeto Timestamp
                         )
                     }.getOrNull()
                 } ?: emptyList()
