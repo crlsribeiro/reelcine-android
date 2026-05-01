@@ -1,5 +1,6 @@
 package com.crlsribeiro.reelcine.presentation.screens.auth
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -76,6 +77,7 @@ fun LoginScreen(
     fun signInWithGoogle() {
         scope.launch {
             try {
+                Log.d("ReelCine_Auth", "Iniciando Google Sign-In...")
                 val credentialManager = CredentialManager.create(context)
                 val googleIdOption = GetGoogleIdOption.Builder()
                     .setServerClientId(context.getString(R.string.default_web_client_id))
@@ -85,15 +87,25 @@ fun LoginScreen(
                 val request = GetCredentialRequest.Builder()
                     .addCredentialOption(googleIdOption)
                     .build()
+
+                Log.d("ReelCine_Auth", "Chamando getCredential...")
                 val result = credentialManager.getCredential(context = context, request = request)
                 val credential = result.credential
+
+                Log.d("ReelCine_Auth", "Credential recebido - class: ${credential::class.simpleName} | type: ${credential.type}")
+
                 if (credential is CustomCredential &&
                     credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
                 ) {
+                    Log.d("ReelCine_Auth", "Tipo correto! Fazendo login no Firebase...")
                     val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                     viewModel.signInWithGoogle(googleIdTokenCredential.idToken)
+                } else {
+                    Log.e("ReelCine_Auth", "Tipo inesperado: ${credential::class.simpleName} / ${credential.type}")
+                    viewModel.onGoogleSignInError("Tipo de credencial inesperado: ${credential.type}")
                 }
             } catch (e: Exception) {
+                Log.e("ReelCine_Auth", "Tipo: ${e::class.simpleName} | Msg: ${e.message}", e)
                 viewModel.onGoogleSignInError(e.message ?: "Google Sign-In failed")
             }
         }
