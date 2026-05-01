@@ -21,9 +21,12 @@ android {
     defaultConfig {
         applicationId = "com.crlsribeiro.reelcine"
         minSdk = 26
-        targetSdk = 36
-        versionCode = 2
-        versionName = "1.0.1"
+        targetSdk = 36 // Já está atualizado, excelente!
+
+        // MUDE AQUI:
+        versionCode = 5
+        versionName = "1.0.4"
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "TMDB_API_KEY", "\"${localProperties["TMDB_API_KEY"] ?: ""}\"")
     }
